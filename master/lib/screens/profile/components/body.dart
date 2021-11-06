@@ -1,5 +1,6 @@
 
 import 'package:final_project/screens/profile/components/profile_cart.dart';
+import 'package:final_project/screens/profile/components/profile_favorite.dart';
 import 'package:final_project/screens/profile/components/profile_menu.dart';
 import 'package:final_project/screens/profile/components/profile_picture.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,17 @@ class Body extends StatelessWidget {
             },
           ),
           ProfileMenu(
-            icon: 'assets/icons/Question mark.svg',
-            text: '설정',
-            press: (){},
+            icon: 'assets/icons/Heart Icon.svg',
+            text: '즐겨찾기',
+            press: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ProfileFavorite();
+                  },
+                ),
+              );
+            },
           ),
           ProfileMenu(
             icon: 'assets/icons/Question mark.svg',

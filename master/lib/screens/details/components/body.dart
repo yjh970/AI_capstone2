@@ -2,6 +2,7 @@ import 'package:final_project/components/default_button.dart';
 import 'package:final_project/components/rounded_icon_button.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/models/Cart.dart';
+import 'package:final_project/models/Favorite.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/screens/details/components/categories_tab_bar.dart';
 import 'package:final_project/screens/details/components/product_description.dart';
@@ -85,34 +86,27 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       );
     }
 
-    void _showConfirmDialog(BuildContext context) {
+    void _showDeleteDialog(BuildContext context) {
       // set up the buttons
-      Widget cancelButton = TextButton(
-        child: Text("아니요"),
+      Widget okayButton = TextButton(
+        child: Text("확인"),
         onPressed: () {
           Navigator.of(context).pop();
         },
       );
-      Widget continueButton = TextButton(
-          child: Text("네"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            _showInfoDialog(context);
-          });
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
         title: Text(
-          "강의 수강 확인",
+          "강의 수강 삭제",
           style: TextStyle(fontSize: 20),
         ),
         content: Text(
-          "해당 강의 ( ${widget.product.title} -- ${widget.product.name} )을(를) 수강하시겠습니까?",
+          "해당 강의 (${widget.product.title})가 정상적으로 수강 목록에서 제거되었습니다!",
           style: TextStyle(fontSize: 16),
         ),
         actions: [
-          cancelButton,
-          continueButton,
+          okayButton,
         ],
       );
 
@@ -198,15 +192,27 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   bottom: getProportionateScreenWidth(20),
                 ),
                 child: DefaultButton(
-                  text: "Participate",
+                  text: widget.product.participateButtonText,
                   press: () {
-                    _showConfirmDialog(context);
-                    item.addToCart(widget.product);
+                    setState(() {
+                      widget.product.isParticipated = !widget.product.isParticipated;
+                      if(widget.product.isParticipated == true)
+                        {
+                          _showInfoDialog(context);
+                          item.addToCart(widget.product);
+                          widget.product.participateButtonText = "Delete";
+                        } else {
+                        _showDeleteDialog(context);
+                        item.removeCart(widget.product);
+                        widget.product.participateButtonText = "Participate";
+                      }
+                    });
                   },
                 ),
               ),
             ),
           ),
+
         ],
       ),
     );

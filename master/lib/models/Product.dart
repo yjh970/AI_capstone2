@@ -6,7 +6,10 @@ class Product{
   final List<String> images;
   final List<Color> colors;
   final double rating;
-  final bool isFavorite, isPopular;
+  final bool isPopular;
+  bool isFavorite;
+  bool isParticipated;
+  String participateButtonText;
 
   Product({
     required this.name,
@@ -16,6 +19,8 @@ class Product{
     this.rating = 0.0,
     this.isFavorite = false,
     this.isPopular = false,
+    this.isParticipated = false,
+    this.participateButtonText = "Participate",
     required this.price,
     required this.title,
     required this.meeting_description,
@@ -53,7 +58,7 @@ List<Product> demoProducts = [
     "1. 청춘의 우리 피다. 사랑의 위하여서, 사막이다, 이상 많이 인간의 얼마나 용감하고 피고 힘있다. \n\n"
     "2. 열락의 인생의 못하다 청춘이 그들은 평화스러운 피는 관현악이며. 설산에서 피부가 공자는 것이다. 위하여. 있으랴? 새 밝은 속잎나고.",
     rating: 4.8,
-    isFavorite: true,
+    // isFavorite: true,
     isPopular: true,
 
   ),
@@ -74,7 +79,7 @@ List<Product> demoProducts = [
     meeting_description: "공장에서 현장 경험만 20년한 공정 관리자",
     mentor_description: "60살",
     rating: 4.3,
-    isFavorite: false,
+    // isFavorite: false,
     isPopular: true,
   ),
   Product(
@@ -94,7 +99,7 @@ List<Product> demoProducts = [
     meeting_description: "현대자동차에서 30년동안 인사팀만 담당한 전문가",
     mentor_description: "55살",
     rating: 4.1,
-    isFavorite: true,
+    // isFavorite: true,
     isPopular: true,
   ),
   Product(
@@ -114,7 +119,7 @@ List<Product> demoProducts = [
     meeting_description: "셀트리온에서 28년동안 수많은 의약품 개발에 참여한 경험자",
     mentor_description: "50살",
     rating: 4.9,
-    isFavorite: true,
+    // isFavorite: true,
     isPopular: false,
   )
 ];
