@@ -38,14 +38,6 @@ class Body extends StatelessWidget {
           SizedBox(
             height: getProportionateScreenHeight(80),
           ),
-          PopularProducts(),
-          SizedBox(
-            height: getProportionateScreenHeight(80),
-          ),
-          PopularProducts(),
-          SizedBox(
-            height: getProportionateScreenHeight(30),
-          ),
         ],
       ),
     ));
