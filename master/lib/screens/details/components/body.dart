@@ -1,6 +1,7 @@
 import 'package:final_project/components/default_button.dart';
 import 'package:final_project/components/rounded_icon_button.dart';
 import 'package:final_project/constants.dart';
+import 'package:final_project/models/Cart.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/screens/details/components/categories_tab_bar.dart';
 import 'package:final_project/screens/details/components/product_description.dart';
@@ -13,6 +14,7 @@ import 'package:final_project/screens/details/components/top_rounded_container.d
 import 'package:final_project/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   final Product product;
@@ -50,6 +52,79 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    void _showInfoDialog(BuildContext context) {
+      // set up the buttons
+      Widget okayButton = TextButton(
+        child: Text("확인"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text(
+          "강의 수강 확인",
+          style: TextStyle(fontSize: 20),
+        ),
+        content: Text(
+          "해당 강의 (${widget.product.title})가 정상적으로 수강완료되었습니다!",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          okayButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
+    void _showConfirmDialog(BuildContext context) {
+      // set up the buttons
+      Widget cancelButton = TextButton(
+        child: Text("아니요"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+      Widget continueButton = TextButton(
+          child: Text("네"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            _showInfoDialog(context);
+          });
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text(
+          "강의 수강 확인",
+          style: TextStyle(fontSize: 20),
+        ),
+        content: Text(
+          "해당 강의 ( ${widget.product.title} -- ${widget.product.name} )을(를) 수강하시겠습니까?",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -111,19 +186,24 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               ],
             ),
           ),
-          TopRoundedContainer(
-            height: 150,
-            color: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: SizeConfig.screenWidth * 0.15,
-                right: SizeConfig.screenWidth * 0.15,
-                top: getProportionateScreenWidth(20),
-                bottom: getProportionateScreenWidth(20),
-              ),
-              child: DefaultButton(
-                text: "Participate",
-                press: () {},
+          Consumer<Cart>(
+            builder: (context, item, child) => TopRoundedContainer(
+              height: 150,
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: SizeConfig.screenWidth * 0.15,
+                  right: SizeConfig.screenWidth * 0.15,
+                  top: getProportionateScreenWidth(20),
+                  bottom: getProportionateScreenWidth(20),
+                ),
+                child: DefaultButton(
+                  text: "Participate",
+                  press: () {
+                    _showConfirmDialog(context);
+                    item.addToCart(widget.product);
+                  },
+                ),
               ),
             ),
           ),

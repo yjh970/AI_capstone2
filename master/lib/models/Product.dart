@@ -16,8 +16,8 @@ class Product{
     this.rating = 0.0,
     this.isFavorite = false,
     this.isPopular = false,
-    required this.title,
     required this.price,
+    required this.title,
     required this.meeting_description,
     required this.mentor_description,
 });
@@ -55,6 +55,7 @@ List<Product> demoProducts = [
     rating: 4.8,
     isFavorite: true,
     isPopular: true,
+
   ),
   Product(
     id: 2,
