@@ -1,5 +1,8 @@
+import 'package:final_project/screens/category/category_screen.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
+import 'package:final_project/screens/category/category_screen.dart';
+import 'package:final_project/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -52,7 +55,8 @@ class BottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushNamed(context, CategoryScreen.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/notification.svg",
@@ -60,7 +64,8 @@ class BottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushNamed(context, NotificationScreen.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset(
