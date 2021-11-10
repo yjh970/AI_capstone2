@@ -1,4 +1,3 @@
-import 'package:final_project/screens/complete_profile/complete_profile_screen.dart';
 import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:final_project/screens/home/home_screen.dart';
@@ -19,11 +18,10 @@ final Map<String, WidgetBuilder> routes = {
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
   LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
-  CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
   DetailsScreen.routeName: (context) => DetailsScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   CategoryScreen.routeName: (context) => CategoryScreen(),
-  NotificationScreen.routeName:(context) => NotificationScreen(),
-  SeniorScreen.routeName:(context)=> SeniorScreen()
+  NotificationScreen.routeName: (context) => NotificationScreen(),
+  SeniorScreen.routeName: (context) => SeniorScreen()
 };

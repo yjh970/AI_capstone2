@@ -1,11 +1,7 @@
 import 'package:final_project/components/default_button.dart';
-import 'package:final_project/components/rounded_icon_button.dart';
-import 'package:final_project/constants.dart';
 import 'package:final_project/models/Cart.dart';
-import 'package:final_project/models/Favorite.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/screens/details/components/categories_tab_bar.dart';
-import 'package:final_project/screens/details/components/product_description.dart';
 import 'package:final_project/screens/details/components/product_description_meeting.dart';
 import 'package:final_project/screens/details/components/product_description_mentor.dart';
 import 'package:final_project/screens/details/components/product_description_qna.dart';
