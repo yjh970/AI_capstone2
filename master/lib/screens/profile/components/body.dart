@@ -3,6 +3,7 @@ import 'package:final_project/screens/profile/components/profile_cart.dart';
 import 'package:final_project/screens/profile/components/profile_favorite.dart';
 import 'package:final_project/screens/profile/components/profile_menu.dart';
 import 'package:final_project/screens/profile/components/profile_picture.dart';
+import 'package:final_project/screens/senior/senior_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -56,7 +57,12 @@ class Body extends StatelessWidget {
             icon: 'assets/icons/Log out.svg',
             text: '로그아웃',
             press: (){},
-          )
+          ),
+      ProfileMenu(
+        icon: 'assets/icons/Settings.svg',
+        text: '미팅 관리(시니어 전용)',
+        press: ()=>Navigator.pushNamed(context, SeniorScreen.routeName),
+      ),
         ],
       ),
     );
