@@ -15,20 +15,23 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _emailController, _passwordController;
+
   String? email;
   String? password;
   bool? remember = false;
   final List<String?> errors = [];
 
   void addError({String? error}) {
-    if(!errors.contains(error))
+    if (!errors.contains(error))
       setState(() {
         errors.add(error!);
       });
   }
 
-  void removeError({String? error}){
-    if(errors.contains(error))
+  void removeError({String? error}) {
+    if (errors.contains(error))
       setState(() {
         errors.remove(error);
       });
@@ -58,7 +61,8 @@ class _SignFormState extends State<SignForm> {
               Text('Remember me'),
               Spacer(),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
+                onTap: () => Navigator.pushNamed(
+                    context, ForgotPasswordScreen.routeName),
                 child: Text("Forgot Password",
                     style: TextStyle(decoration: TextDecoration.underline)),
               ),
