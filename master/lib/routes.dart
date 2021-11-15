@@ -1,6 +1,7 @@
 import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:final_project/screens/home/home_screen.dart';
+import 'package:final_project/screens/loading/loading_screen.dart';
 import 'package:final_project/screens/login_success/login_success_screen.dart';
 import 'package:final_project/screens/category/category_screen.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
@@ -13,6 +14,7 @@ import 'package:final_project/screens/senior/senior_screen.dart';
 import 'package:flutter/widgets.dart';
 
 final Map<String, WidgetBuilder> routes = {
+  LoadingScreen.routeName: (context) => LoadingScreen(),
   SplashScreen.routeName: (context) => SplashScreen(),
   SignInScreen.routeName: (context) => SignInScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
@@ -21,7 +23,7 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   DetailsScreen.routeName: (context) => DetailsScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
-  CategoryScreen.routeName: (context) => CategoryScreen(),
-  NotificationScreen.routeName: (context) => NotificationScreen(),
-  SeniorScreen.routeName: (context) => SeniorScreen()
+  // CategoryScreen.routeName: (context) => CategoryScreen(),
+  // NotificationScreen.routeName:(context) => NotificationScreen(),
+  // SeniorScreen.routeName:(context)=> SeniorScreen()
 };

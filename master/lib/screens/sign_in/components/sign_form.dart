@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/custom_suffix_icon.dart';
 import 'package:final_project/components/default_button.dart';
 import 'package:final_project/components/form_error.dart';
 import 'package:final_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:final_project/screens/login_success/login_success_screen.dart';
+import 'package:final_project/services/auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -16,12 +18,12 @@ class SignForm extends StatefulWidget {
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _emailController, _passwordController;
-
   String? email;
   String? password;
+  String error = '';
   bool? remember = false;
   final List<String?> errors = [];
+  final AuthService _auth = AuthService();
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -72,13 +74,33 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                dynamic result =
+                    await _auth.SignInWithEmailAndPassword(email, password);
+                FirebaseFirestore? _instance;
+                _instance = FirebaseFirestore.instance;
+                _instance.collection('cart').doc(_auth.getCurrentUser())
+                    .set({
+                  'cartProduct' : null
+                });
                 //Email이랑 비밀번호가 valid하면 login_success 화면으로 이동
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                if (result == null) {
+                  setState(
+                      () => error = 'could not sign in with those credentials');
+                } else {
+                  Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                }
               }
             },
+          ),
+          SizedBox(
+            height: getProportionateScreenHeight(20),
+          ),
+          Text(
+            error,
+            style: TextStyle(color: Colors.red, fontSize: 14),
           ),
         ],
       ),

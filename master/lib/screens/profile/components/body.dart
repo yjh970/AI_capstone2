@@ -39,13 +39,13 @@ class Body extends StatelessWidget {
             icon: 'assets/icons/Heart Icon.svg',
             text: '즐겨찾기',
             press: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return ProfileFavorite();
-                  },
-                ),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) {
+              //       return ProfileFavorite();
+              //     },
+              //   ),
+              // );
             },
           ),
           ProfileMenu(

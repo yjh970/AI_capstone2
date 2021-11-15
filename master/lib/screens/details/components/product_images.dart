@@ -6,12 +6,9 @@ import '../../../size_config.dart';
 
 
 class ProductImages extends StatefulWidget {
-  const ProductImages({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
 
-  final Product product;
+  Product? product;
+  ProductImages({this.product});
 
   @override
   State<ProductImages> createState() => _ProductImagesState();
@@ -27,7 +24,7 @@ class _ProductImagesState extends State<ProductImages> {
           width: getProportionateScreenWidth(238),
           child: AspectRatio(
             aspectRatio: 1,
-            child: Image.asset(widget.product.images[selectedImage]),
+            child: Image.asset(widget.product!.image[selectedImage]),
           ),
         ),
         SizedBox(
@@ -36,7 +33,7 @@ class _ProductImagesState extends State<ProductImages> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(widget.product.images.length, (index) => buildSmallPreview(index)),
+            ...List.generate(widget.product!.image.length, (index) => buildSmallPreview(index)),
           ],
         )
       ],
@@ -60,7 +57,7 @@ class _ProductImagesState extends State<ProductImages> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: selectedImage == index ? kPrimaryColor : kSecondaryColor),
         ),
-        child: Image.asset(widget.product.images[index]),
+        child: Image.asset(widget.product!.image[index]),
       ),
     );
   }

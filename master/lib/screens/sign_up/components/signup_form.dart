@@ -3,6 +3,8 @@ import 'package:final_project/components/custom_suffix_icon.dart';
 import 'package:final_project/components/default_button.dart';
 import 'package:final_project/components/form_error.dart';
 import 'package:final_project/screens/sign_in/sign_in_screen.dart';
+import 'package:final_project/services/auth.dart';
+import 'package:final_project/services/database.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -17,7 +19,8 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _emailController,
+  final AuthService _auth = AuthService();
+  TextEditingController? _emailController,
       _passwordController,
       _nameController,
       _jobGroupController,
@@ -87,11 +90,23 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 _showRedirectDialog(context);
                 //Go to OTP
-                saveAccount();
+                String email = _emailController!.text;
+                String password = _passwordController!.text;
+                String name = _nameController!.text;
+                String jobGroup = _jobGroupController!.text;
+                String phoneNumber = _phoneNumberController!.text;
+                String specification = dropdownValue;
+                dynamic result =
+                    await _auth.registerWithEmailAndPassword(email, password, name, jobGroup, phoneNumber, specification);
+                if (result == null) {
+                  print('invalid account');
+                }
+                // saveAccount();
               }
             },
           ),
@@ -310,26 +325,6 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       ),
     );
-  }
-
-  void saveAccount() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String name = _nameController.text;
-    String jobGroup = _jobGroupController.text;
-    String phoneNumber = _phoneNumberController.text;
-    String specification = dropdownValue;
-
-    Map<String, String> account = {
-      'email': email,
-      'password': password,
-      'name': name,
-      'jobGroup': jobGroup,
-      'phoneNumber': phoneNumber,
-      'specification': specification,
-    };
-
-    FirebaseFirestore.instance.collection("Accounts").add(account);
   }
 
   void _showRedirectDialog(BuildContext context) {
