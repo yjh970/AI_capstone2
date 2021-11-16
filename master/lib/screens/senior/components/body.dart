@@ -4,7 +4,7 @@ import 'package:final_project/screens/senior/components/senior_user.dart';
 import 'package:final_project/screens/senior/components/senior_qna.dart';
 import 'package:final_project/screens/senior/components/senior_rating.dart';
 import 'package:final_project/screens/senior/components/senior_status.dart';
-
+import 'package:final_project/screens/senior/components/senior_add.dart';
 import 'package:final_project/screens/senior/components/senior_menu.dart';
 import 'package:final_project/screens/profile/components/profile_picture.dart';
 import 'package:final_project/screens/senior/components/senior_status.dart';
@@ -17,6 +17,20 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          SeniorMenu(
+            icon: 'assets/icons/Add.svg',
+            text: '미팅 추가',
+            
+            press: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return SeniorAdd();
+                  },
+                ),
+              );
+            },
+          ),
           SeniorMenu(
             icon: 'assets/icons/Status.svg',
             text: '미팅 현황',
