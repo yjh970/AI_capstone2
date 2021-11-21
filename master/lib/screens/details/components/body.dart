@@ -1,10 +1,7 @@
 import 'package:final_project/components/default_button.dart';
-import 'package:final_project/components/rounded_icon_button.dart';
-import 'package:final_project/constants.dart';
-import 'package:final_project/models/Cart.dart';
-import 'package:final_project/models/Favorite.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
+import 'package:final_project/models/favorite_item.dart';
 import 'package:final_project/screens/details/components/categories_tab_bar.dart';
 import 'package:final_project/screens/details/components/product_description_meeting.dart';
 import 'package:final_project/screens/details/components/product_description_mentor.dart';
@@ -13,6 +10,7 @@ import 'package:final_project/screens/details/components/product_description_rat
 import 'package:final_project/screens/details/components/product_images.dart';
 import 'package:final_project/screens/details/components/top_rounded_container.dart';
 import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/size_config.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +38,6 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
   double ratingHeight = 0;
   double questionHeight = 0;
   bool isTapToScroll = false;
-  String participateText = "Participate";
-  bool isParticipated = false;
 
   @override
   void initState() {
@@ -59,6 +55,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
         Provider.of<ProductSelectionService>(context, listen: false);
     widget.product = proSelection.selectedProduct;
     CartService cartService = Provider.of<CartService>(context, listen: false);
+    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
 
     void _showInfoDialog(BuildContext context) {
       // set up the buttons
@@ -132,22 +129,57 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           ProductImages(product: widget.product!),
           Align(
             alignment: Alignment.centerRight,
-            child: Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-              width: getProportionateScreenWidth(64),
-              decoration: BoxDecoration(
-                  color: widget.product!.isFavorite
-                      ? Color(0xFFFFE6E6)
-                      : Color(0xFFF5F6F9),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20))),
-              child: SvgPicture.asset(
-                'assets/icons/Heart Icon_2.svg',
-                color: widget.product!.isFavorite
-                    ? Color(0xFFFF4848)
-                    : Color(0xFFDBDEE4),
-              ),
+            child: Consumer<FavoriteService>(
+                builder: (context, favorite, child) {
+                  Widget renderedButton;
+                  if (favorite.isProductAddedToFavorite(this.widget.product) == false){
+                    renderedButton = GestureDetector(
+                      onTap: (){
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                        favoriteService.add(context, FavoriteItem(product: this.widget.product));
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                      }
+                      ,
+                      child: Container(
+                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                        width: getProportionateScreenWidth(64),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF5F6F9),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        child: SvgPicture.asset(
+                          'assets/icons/Heart Icon_2.svg',
+                          color: Color(0xFFDBDEE4),
+                        ),
+                      ),
+                    );
+                  }
+                  else{
+                    renderedButton = GestureDetector(
+                      onTap: (){
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                        favoriteService.remove(context, FavoriteItem(product: this.widget.product));
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                      },
+
+                      child: Container(
+                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                        width: getProportionateScreenWidth(64),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFFE6E6),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        child: SvgPicture.asset(
+                          'assets/icons/Heart Icon_2.svg',
+                          color: Color(0xFFFF4848),
+                        ),
+                      ),
+                    );
+                  }
+                  return renderedButton;
+                }
             ),
           ),
           TopRoundedContainer(
@@ -195,6 +227,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   text: "Participate",
                   press: () {
                     print(cart.isProductAddedToCart(widget.product));
+                    _showInfoDialog(context);
                     cartService.add(context, CartItem(product: widget.product));
                     print(cart.isProductAddedToCart(widget.product));
                   },
@@ -204,6 +237,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   text: "Delete",
                   press: () {
                     print(cart.isProductAddedToCart(widget.product));
+                    _showDeleteDialog(context);
                     cartService.remove(
                         context, CartItem(product: widget.product));
                     print(cart.isProductAddedToCart(widget.product));
@@ -211,37 +245,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                 );
               }
               return renderedButton;
-              //   TopRoundedContainer(
-              //   height: 150,
-              //   color: Colors.white,
-              //   child: Padding(
-              //     padding: EdgeInsets.only(
-              //       left: SizeConfig.screenWidth * 0.15,
-              //       right: SizeConfig.screenWidth * 0.15,
-              //       top: getProportionateScreenWidth(20),
-              //       bottom: getProportionateScreenWidth(20),
-              //     ),
-              //     child: DefaultButton(
-              //     if(!car)
-              //     text: "Participate",
-              //     press: () {
-              //       setState(() {
-              //         widget.product.isParticipated = !widget.product.isParticipated;
-              //         if(widget.product.isParticipated == true)
-              //         {
-              //           _showInfoDialog(context);
-              //           item.addToCart(widget.product);
-              //           widget.product.participateButtonText = "Delete";
-              //         } else {
-              //           _showDeleteDialog(context);
-              //           item.removeCart(widget.product);
-              //           widget.product.participateButtonText = "Participate";
-              //         }
-              //       });
-              //     },
-              //   ),
-              // ),
-              //   ),}
+              //
             },
           ),
         ],

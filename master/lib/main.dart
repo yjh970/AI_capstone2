@@ -1,10 +1,10 @@
 import 'package:final_project/constants.dart';
-import 'package:final_project/models/Cart.dart';
 import 'package:final_project/routes.dart';
 import 'package:final_project/screens/loading/loading_screen.dart';
 import 'package:final_project/screens/splash/splash_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:final_project/theme.dart';
@@ -35,9 +35,6 @@ class MyApp extends StatelessWidget {
     //
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => Cart(),
-        ),
         ChangeNotifierProvider(create: (context) => Favorite()),
         ChangeNotifierProvider(
           create: (context) => ProductSelectionService(),
@@ -47,6 +44,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => CartService()),
+        ChangeNotifierProvider(create: (context) => FavoriteService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

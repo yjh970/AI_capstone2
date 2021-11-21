@@ -25,19 +25,24 @@ class AuthService extends ChangeNotifier {
   //sign in with email & password
 
   Future SignInWithEmailAndPassword(String? email, String? password) async {
-      UserCredential result = await auth.signInWithEmailAndPassword(
-          email: email!, password: password!);
-      User? user = result.user;
-      if(user!= null) {
-        _appUser = AppUser(
-          uid: result.user!.uid,
-        );
-      }
+    try{      UserCredential result = await auth.signInWithEmailAndPassword(
+        email: email!, password: password!);
+    User? user = result.user;
+    if(user!= null) {
+      _appUser = AppUser(
+        uid: result.user!.uid,
+      );
+    }
 
-      notifyListeners();
-      print(_appUser!.uid);
+    notifyListeners();
+    print(_appUser!.uid);
 
-      return user;
+    return user;}
+    catch(e) {
+      print(e.toString());
+      return null;
+    }
+
   }
 
 

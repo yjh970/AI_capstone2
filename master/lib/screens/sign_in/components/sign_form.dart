@@ -85,6 +85,10 @@ class _SignFormState extends State<SignForm> {
                     .set({
                   'cartProduct' : null
                 });
+                _instance.collection('favorites').doc(_auth.getCurrentUser())
+                    .set({
+                  'favoriteProduct' : null
+                });
                 //Email이랑 비밀번호가 valid하면 login_success 화면으로 이동
                 if (result == null) {
                   setState(

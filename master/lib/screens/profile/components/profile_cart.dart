@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/constants.dart';
-import 'package:final_project/models/Cart.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/services/auth.dart';
@@ -19,55 +18,6 @@ class _ProfileCartState extends State<ProfileCart> {
 
   @override
   Widget build(BuildContext context) {
-    // AuthService authService = Provider.of<AuthService>(context, listen: false);
-    //
-    // _instance = FirebaseFirestore.instance;
-    // FirebaseFirestore.instance.collection('cart').doc(authService.getCurrentUser())
-    // .get().then((DocumentSnapshot documentSnapshot){
-    //   if(documentSnapshot.exists){
-    //     print('Document data: ${documentSnapshot.data()}');
-    //   }
-    //
-    // });
-    //
-    // // return Scaffold();
-    // Stream<DocumentSnapshot> _usersStream = _instance!
-    //     .collection('cart')
-    //     .doc(authService.getCurrentUser())
-    //     .snapshots();
-    //
-    // return StreamBuilder<QuerySnapshot>(
-    //   stream: _usersStream,
-    //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-    //     if(snapshot.connectionState == ConnectionState.active)
-    //       {
-    //         return ListView(
-    //           children: snapshot.data!.documents.map((DocumentSnapshot document){
-    //             return ListTile(
-    //               title: Text(document['title']),
-    //               subtitle: Text(document['name']),
-    //             );
-    //           }).toList(),
-    //         );
-    //
-    //       }
-    //   }
-    // );
-
-    // return StreamBuilder<DocumentSnapshot>(
-    //     stream: _usersStream,
-    //     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-    //       return ListView(
-    //         children: snapshot.data!.map((DocumentSnapshot document) {
-    //           Map<String, dynamic> data =
-    //               document.data()! as Map<String, String>;
-    //           return ListTile(
-    //             title: Text(data['title']),
-    //             subtitle: Text(data['name']),
-    //           );
-    //         }).toList(),
-    //       );
-    //     }
     return Scaffold(
       appBar: AppBar(
         title: Text("수강 내역"),

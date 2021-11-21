@@ -41,13 +41,6 @@ class PopularProducts extends StatelessWidget {
                         proSelection.selectedProduct = products[index];
                         Navigator.pushNamed(context, DetailsScreen.routeName);
                       },
-                      // product: products[index],
-                      // press: () => Navigator.pushNamed(
-                      //   context,
-                      //   DetailsScreen.routeName,
-                      //   arguments: ProductDetailsArgument(
-                      //       product: products[index]),
-                      // ),
                     );
                   return SizedBox.shrink();
                 },

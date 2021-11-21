@@ -7,8 +7,6 @@ class Product{
   final List<String> image;
   final double rating;
   final bool isPopular;
-  bool isFavorite;
-  bool isParticipated;
   String participateButtonText;
 
   Product({
@@ -17,9 +15,7 @@ class Product{
     required this.image,
     // required this.images,
     required this.rating,
-    this.isFavorite = false,
     this.isPopular = false,
-    this.isParticipated = false,
     this.participateButtonText = "Participate",
     required this.price,
     required this.title,

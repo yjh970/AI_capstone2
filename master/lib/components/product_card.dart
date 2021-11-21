@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/Favorite.dart';
 import 'package:final_project/models/Product.dart';
+import 'package:final_project/models/favorite_item.dart';
+import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,7 @@ import '../constants.dart';
 import '../size_config.dart';
 import 'default_button.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
 
   Product? product;
   Function? onCardClick;
@@ -18,12 +20,24 @@ class ProductCard extends StatelessWidget {
   ProductCard({this.product, this.onCardClick});
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
   Widget build(BuildContext context) {
+
+    ProductSelectionService proSelection =
+    Provider.of<ProductSelectionService>(context, listen: false);
+    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
+
+
+
     return Padding(
       padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
       child: GestureDetector(
         onTap: () {
-          this.onCardClick!();
+          this.widget.onCardClick!();
         },
         child: SizedBox(
           width: getProportionateScreenWidth(140),
@@ -38,13 +52,13 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Image.asset(
-                    this.product!.image[0],
+                    this.widget.product!.image[0],
                   ),
                 ),
               ),
               const SizedBox(height: 5),
               Text(
-                this.product!.title,
+                this.widget.product!.title,
                 style: TextStyle(color: Colors.black),
                 maxLines: 2,
               ),
@@ -52,47 +66,64 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${this.product!.price}\원",
+                    "${this.widget.product!.price}\원",
                     style: TextStyle(
                         fontSize: getProportionateScreenWidth(18),
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFFF7643)),
                   ),
-                  // Consumer<Favorite>(
-                  //   builder: (context, item, child) => InkWell(
-                  //     borderRadius: BorderRadius.circular(30),
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(getProportionateScreenWidth(6)),
-                  //       width: getProportionateScreenWidth(28),
-                  //       height: getProportionateScreenHeight(28),
-                  //       decoration: BoxDecoration(
-                  //         color: widget.product.isFavorite
-                  //             ? Colors.red.withOpacity(0.15)
-                  //             : Color(0xFFF5F6F9).withOpacity(0.1),
-                  //         shape: BoxShape.circle,
-                  //       ),
-                  //       child: SvgPicture.asset(
-                  //         'assets/icons/Heart Icon_2.svg',
-                  //         color: widget.product.isFavorite
-                  //             ? Color(0xFFFF4848)
-                  //             : Color(0xFFDBDEE4),
-                  //       ),
-                  //     ),
-                  //     onTap: () {
-                  //       setState(() {
-                  //         widget.product.isFavorite =
-                  //             !widget.product.isFavorite;
-                  //         if (widget.product.isFavorite == true) {
-                  //           _showInfoDialog(context);
-                  //           item.addToFavorite(widget.product);
-                  //         } else {
-                  //           _showDeleteDialog(context);
-                  //           item.removeFavorite(widget.product);
-                  //         }
-                  //       });
-                  //     },
-                  //   ),
-                  // ),
+                  Consumer<FavoriteService>(
+                    builder: (context, favorite, child) {
+                      Widget renderedButton;
+                      if (favorite.isProductAddedToFavorite(this.widget.product) == false){
+                        renderedButton = GestureDetector(
+                          onTap: (){
+                            print(favorite.isProductAddedToFavorite(this.widget.product));
+                            favoriteService.add(context, FavoriteItem(product: this.widget.product));
+                            print(favorite.isProductAddedToFavorite(this.widget.product));
+                          }
+                          ,
+                          child: Container(
+                            padding: EdgeInsets.all(getProportionateScreenWidth(6)),
+                            width: getProportionateScreenWidth(28),
+                            height: getProportionateScreenHeight(28),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5F6F9).withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/icons/Heart Icon_2.svg',
+                              color: Color(0xFFDBDEE4),
+                            ),
+                          ),
+                        );
+                      }
+                      else{
+                        renderedButton = GestureDetector(
+                            onTap: (){
+                              print(favorite.isProductAddedToFavorite(this.widget.product));
+                              favoriteService.remove(context, FavoriteItem(product: this.widget.product));
+                              print(favorite.isProductAddedToFavorite(this.widget.product));
+                            },
+
+                          child: Container(
+                            padding: EdgeInsets.all(getProportionateScreenWidth(6)),
+                            width: getProportionateScreenWidth(28),
+                            height: getProportionateScreenHeight(28),
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.15),
+                              shape: BoxShape.circle,
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/icons/Heart Icon_2.svg',
+                              color: Color(0xFFFF4848),
+                            ),
+                          ),
+                        );
+                      }
+                      return renderedButton;
+                    }
+                  ),
                 ],
               ),
             ],
