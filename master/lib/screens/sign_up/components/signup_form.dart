@@ -103,6 +103,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 String specification = dropdownValue;
                 dynamic result =
                     await _auth.registerWithEmailAndPassword(email, password, name, jobGroup, phoneNumber, specification);
+
+
                 if (result == null) {
                   print('invalid account');
                 }

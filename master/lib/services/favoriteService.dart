@@ -41,7 +41,7 @@ class FavoriteService extends ChangeNotifier {
     });
   }
 
-  void remove(BuildContext context, FavoriteItem item) {
+  void remove(BuildContext context,  FavoriteItem item) {
     _items.removeWhere((_item) => _item.product == item.product);
 
     AuthService authService = Provider.of<AuthService>(context, listen: false);
@@ -66,23 +66,23 @@ class FavoriteService extends ChangeNotifier {
   }
 
 
-  void loadFavoriteItemsFromFirebase(BuildContext context) {
-    if (_items.length > 0) {
-      _items.clear();
-    }
-    AuthService authService = Provider.of<AuthService>(context, listen: false);
-    ProductService proService =
-    Provider.of<ProductService>(context, listen: false);
-    ProductSelectionService proSelectionService =
-    Provider.of<ProductSelectionService>(context, listen: false);
-
-    FirebaseFirestore.instance
-        .collection('favorites')
-        .doc(authService.getCurrentUser())
-        .get()
-        .then((DocumentSnapshot snapshot) {
-      Map<String, String> cartItems = snapshot.get(FieldPath(['favoriteProduct']));
-      notifyListeners();
-    });
-  }
+  // void loadFavoriteItemsFromFirebase(BuildContext context) {
+  //   if (_items.length > 0) {
+  //     _items.clear();
+  //   }
+  //   AuthService authService = Provider.of<AuthService>(context, listen: false);
+  //   ProductService proService =
+  //   Provider.of<ProductService>(context, listen: false);
+  //   ProductSelectionService proSelectionService =
+  //   Provider.of<ProductSelectionService>(context, listen: false);
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('favorites')
+  //       .doc(authService.getCurrentUser())
+  //       .get()
+  //       .then((DocumentSnapshot snapshot) {
+  //     Map<String, String> cartItems = snapshot.get(FieldPath(['favoriteProduct']));
+  //     notifyListeners();
+  //   });
+  // }
 }
