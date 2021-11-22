@@ -22,7 +22,10 @@ class PopularProducts extends StatelessWidget {
     return Column(
       children: [
         SectionTitle(text: "Popular Product", press: () {
-
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MoreDetails()),
+          );
         }),
         SizedBox(
           height: getProportionateScreenHeight(20),
