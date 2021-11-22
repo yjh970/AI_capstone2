@@ -1,6 +1,7 @@
 import 'package:final_project/components/default_button.dart';
-import 'package:final_project/models/Cart.dart';
 import 'package:final_project/models/Product.dart';
+import 'package:final_project/models/cart_item.dart';
+import 'package:final_project/models/favorite_item.dart';
 import 'package:final_project/screens/details/components/categories_tab_bar.dart';
 import 'package:final_project/screens/details/components/product_description_meeting.dart';
 import 'package:final_project/screens/details/components/product_description_mentor.dart';
@@ -8,15 +9,16 @@ import 'package:final_project/screens/details/components/product_description_qna
 import 'package:final_project/screens/details/components/product_description_rating.dart';
 import 'package:final_project/screens/details/components/product_images.dart';
 import 'package:final_project/screens/details/components/top_rounded_container.dart';
+import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/favoriteService.dart';
+import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
-  final Product product;
-
-  const Body({Key? key, required this.product}) : super(key: key);
+  Product? product;
 
   @override
   State<Body> createState() => _BodyState();
@@ -49,6 +51,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    ProductSelectionService proSelection =
+        Provider.of<ProductSelectionService>(context, listen: false);
+    widget.product = proSelection.selectedProduct;
+    CartService cartService = Provider.of<CartService>(context, listen: false);
+    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
+
     void _showInfoDialog(BuildContext context) {
       // set up the buttons
       Widget okayButton = TextButton(
@@ -65,7 +73,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           style: TextStyle(fontSize: 20),
         ),
         content: Text(
-          "해당 강의 (${widget.product.title})가 정상적으로 수강완료되었습니다!",
+          "해당 강의 (${widget.product!.title})가 정상적으로 수강완료되었습니다!",
           style: TextStyle(fontSize: 16),
         ),
         actions: [
@@ -98,7 +106,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           style: TextStyle(fontSize: 20),
         ),
         content: Text(
-          "해당 강의 (${widget.product.title})가 정상적으로 수강 목록에서 제거되었습니다!",
+          "해당 강의 (${widget.product!.title})가 정상적으로 수강 목록에서 제거되었습니다!",
           style: TextStyle(fontSize: 16),
         ),
         actions: [
@@ -118,25 +126,60 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProductImages(product: widget.product),
+          ProductImages(product: widget.product!),
           Align(
             alignment: Alignment.centerRight,
-            child: Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-              width: getProportionateScreenWidth(64),
-              decoration: BoxDecoration(
-                  color: widget.product.isFavorite
-                      ? Color(0xFFFFE6E6)
-                      : Color(0xFFF5F6F9),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20))),
-              child: SvgPicture.asset(
-                'assets/icons/Heart Icon_2.svg',
-                color: widget.product.isFavorite
-                    ? Color(0xFFFF4848)
-                    : Color(0xFFDBDEE4),
-              ),
+            child: Consumer<FavoriteService>(
+                builder: (context, favorite, child) {
+                  Widget renderedButton;
+                  if (favorite.isProductAddedToFavorite(this.widget.product) == false){
+                    renderedButton = GestureDetector(
+                      onTap: (){
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                        favoriteService.add(context, FavoriteItem(product: this.widget.product));
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                      }
+                      ,
+                      child: Container(
+                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                        width: getProportionateScreenWidth(64),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF5F6F9),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        child: SvgPicture.asset(
+                          'assets/icons/Heart Icon_2.svg',
+                          color: Color(0xFFDBDEE4),
+                        ),
+                      ),
+                    );
+                  }
+                  else{
+                    renderedButton = GestureDetector(
+                      onTap: (){
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                        favoriteService.remove(context, FavoriteItem(product: this.widget.product));
+                        print(favorite.isProductAddedToFavorite(this.widget.product));
+                      },
+
+                      child: Container(
+                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                        width: getProportionateScreenWidth(64),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFFE6E6),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        child: SvgPicture.asset(
+                          'assets/icons/Heart Icon_2.svg',
+                          color: Color(0xFFFF4848),
+                        ),
+                      ),
+                    );
+                  }
+                  return renderedButton;
+                }
             ),
           ),
           TopRoundedContainer(
@@ -147,7 +190,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               slivers: [
                 SliverAppBar(
                   titleSpacing: 20,
-                  title: Text(widget.product.title),
+                  title: Text(widget.product!.title),
                   automaticallyImplyLeading: false,
                 ),
                 SliverAppBar(
@@ -162,13 +205,13 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                 SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     ProductDescriptionMeeting(
-                        product: widget.product, key: meetingKey),
+                        product: widget.product!, key: meetingKey),
                     ProductDescriptionMentor(
-                        product: widget.product, key: mentorKey),
+                        product: widget.product!, key: mentorKey),
                     ProductDescriptionRating(
-                        product: widget.product, key: ratingKey),
+                        product: widget.product!, key: ratingKey),
                     ProductDescriptionQnA(
-                      product: widget.product,
+                      product: widget.product!,
                       key: questionsKey,
                     )
                   ]),
@@ -176,39 +219,35 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Consumer<Cart>(
-            builder: (context, item, child) => TopRoundedContainer(
-              height: 150,
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: SizeConfig.screenWidth * 0.15,
-                  right: SizeConfig.screenWidth * 0.15,
-                  top: getProportionateScreenWidth(20),
-                  bottom: getProportionateScreenWidth(20),
-                ),
-                child: DefaultButton(
-                  text: widget.product.participateButtonText,
+          Consumer<CartService>(
+            builder: (context, cart, child) {
+              Widget renderedButton;
+              if (cart.isProductAddedToCart(widget.product) == false) {
+                renderedButton = DefaultButton(
+                  text: "Participate",
                   press: () {
-                    setState(() {
-                      widget.product.isParticipated = !widget.product.isParticipated;
-                      if(widget.product.isParticipated == true)
-                        {
-                          _showInfoDialog(context);
-                          item.addToCart(widget.product);
-                          widget.product.participateButtonText = "Delete";
-                        } else {
-                        _showDeleteDialog(context);
-                        item.removeCart(widget.product);
-                        widget.product.participateButtonText = "Participate";
-                      }
-                    });
+                    print(cart.isProductAddedToCart(widget.product));
+                    _showInfoDialog(context);
+                    cartService.add(context, CartItem(product: widget.product));
+                    print(cart.isProductAddedToCart(widget.product));
                   },
-                ),
-              ),
-            ),
+                );
+              } else {
+                renderedButton = DefaultButton(
+                  text: "Delete",
+                  press: () {
+                    print(cart.isProductAddedToCart(widget.product));
+                    _showDeleteDialog(context);
+                    cartService.remove(
+                        context, CartItem(product: widget.product));
+                    print(cart.isProductAddedToCart(widget.product));
+                  },
+                );
+              }
+              return renderedButton;
+              //
+            },
           ),
-
         ],
       ),
     );

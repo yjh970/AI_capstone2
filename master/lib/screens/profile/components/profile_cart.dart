@@ -1,11 +1,20 @@
-import 'package:final_project/models/Cart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/constants.dart';
+import 'package:final_project/models/Product.dart';
+import 'package:final_project/models/cart_item.dart';
+import 'package:final_project/services/auth.dart';
+import 'package:final_project/services/cartService.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:final_project/screens/details/components/body.dart';
 
+class ProfileCart extends StatefulWidget {
+  @override
+  State<ProfileCart> createState() => _ProfileCartState();
+}
 
-
-class ProfileCart extends StatelessWidget {
+class _ProfileCartState extends State<ProfileCart> {
+  FirebaseFirestore? _instance;
 
   @override
   Widget build(BuildContext context) {
@@ -13,36 +22,76 @@ class ProfileCart extends StatelessWidget {
       appBar: AppBar(
         title: Text("수강 내역"),
       ),
-      body: Consumer<Cart>(
-        builder: (BuildContext context, Cart cart, Widget? child){
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView.builder(
-                  itemCount: cart.productCart.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (cart.productCart.isEmpty) {
-                      return Text('no products in cart');
-                    }
-                    final item = cart.productCart[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(
-                          item.images[0],
-                        ),
+      body: Consumer<CartService>(
+          builder: (context, cart, child) {
+            List<Widget> cartItems = [];
+            if (cart.items.length > 0) {
+              cart.items.forEach((CartItem item) {
+                Product itemProduct = (item.product as Product);
+                cartItems.add(
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: Offset.zero
+                            )
+                          ]
                       ),
-                      title: Text(item.title, style: TextStyle(
-                        fontSize: 20,
-                      ),),
-                      subtitle: Text('가격: ${item.price.toString()} 원'),
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipOval(
+                            child: Image.asset(itemProduct.image[0],
+                                width: 50, height: 50, fit: BoxFit.cover),
+                          ),
+                          SizedBox(width: 20,),
+                          Expanded(child:
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(itemProduct.title,
+                                  style: TextStyle(
+                                      color: kPrimaryColor
+                                  )
+                              ),
+                              Text(itemProduct.name,
+                                  style: TextStyle(
+                                      color: kPrimaryColor
+                                  )
+                              ),
+                            ],
+                          ),)
+                        ],
+                      ),
+                    )
+                );
+              });
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: SingleChildScrollView(
+                        child: Column(children: cartItems),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Scaffold();
+            }
+          }
+      )
     );
   }
 }
