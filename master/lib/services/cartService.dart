@@ -65,23 +65,34 @@ class CartService extends ChangeNotifier {
   }
 
 
-  void loadCartItemsFromFirebase(BuildContext context) {
-    if (_items.length > 0) {
-      _items.clear();
-    }
-    AuthService authService = Provider.of<AuthService>(context, listen: false);
-    ProductService proService =
-        Provider.of<ProductService>(context, listen: false);
-    ProductSelectionService proSelectionService =
-        Provider.of<ProductSelectionService>(context, listen: false);
-
-    FirebaseFirestore.instance
-        .collection('cart')
-        .doc(authService.getCurrentUser())
-        .get()
-        .then((DocumentSnapshot snapshot) {
-      Map<String, String> cartItems = snapshot.get(FieldPath(['cartProduct']));
-      notifyListeners();
-    });
-  }
+  // void loadCartItemsFromFirebase(BuildContext context) {
+  //   if (_items.length > 0) {
+  //     _items.clear();
+  //   }
+  //   AuthService authService = Provider.of<AuthService>(context, listen: false);
+  //   ProductService proService =
+  //       Provider.of<ProductService>(context, listen: false);
+  //   ProductSelectionService proSelectionService =
+  //       Provider.of<ProductSelectionService>(context, listen: false);
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('cart')
+  //       .doc(authService.getCurrentUser())
+  //       .get()
+  //       .then((DocumentSnapshot snapshot) {
+  //         if(snapshot.exists){
+  //           Map<String, dynamic> cartItems = snapshot.get(FieldPath(['cartProduct']));
+  //
+  //           proService.getProducts().forEach((Product pro) {
+  //             if(cartItems.keys.contains(pro.title)){
+  //               _items.add(CartItem(
+  //                 product:pro)
+  //               );
+  //             }
+  //           });
+  //           notifyListeners();
+  //         }
+  //
+  //   });
+  // }
 }

@@ -57,7 +57,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     CartService cartService = Provider.of<CartService>(context, listen: false);
     FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
 
-    void _showInfoDialog(BuildContext context) {
+    void _addParticipateDialog(BuildContext context) {
       // set up the buttons
       Widget okayButton = TextButton(
         child: Text("확인"),
@@ -90,7 +90,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       );
     }
 
-    void _showDeleteDialog(BuildContext context) {
+    void _deleteParticipateDialog(BuildContext context) {
       // set up the buttons
       Widget okayButton = TextButton(
         child: Text("확인"),
@@ -123,6 +123,72 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       );
     }
 
+    void _addFavoriteDialog(BuildContext context) {
+      // set up the buttons
+      Widget okayButton = TextButton(
+        child: Text("확인"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text(
+          "즐겨찾기 확인",
+          style: TextStyle(fontSize: 20),
+        ),
+        content: Text(
+          "해당 강의 (${widget.product!.title})가 정상적으로 즐겨찾기에 추가되었습니다!",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          okayButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
+    void _deleteFavoriteDialog(BuildContext context) {
+      // set up the buttons
+      Widget okayButton = TextButton(
+        child: Text("확인"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text(
+          "즐겨찾기 삭제",
+          style: TextStyle(fontSize: 20),
+        ),
+        content: Text(
+          "해당 강의 (${widget.product!.title})가 정상적으로 즐겨찾기에서 제거되었습니다!",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          okayButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -137,6 +203,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       onTap: (){
                         print(favorite.isProductAddedToFavorite(this.widget.product));
                         favoriteService.add(context, FavoriteItem(product: this.widget.product));
+                        _addFavoriteDialog(context);
                         print(favorite.isProductAddedToFavorite(this.widget.product));
                       }
                       ,
@@ -160,6 +227,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       onTap: (){
                         print(favorite.isProductAddedToFavorite(this.widget.product));
                         favoriteService.remove(context, FavoriteItem(product: this.widget.product));
+                        _deleteFavoriteDialog(context);
                         print(favorite.isProductAddedToFavorite(this.widget.product));
                       },
 
@@ -227,7 +295,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   text: "Participate",
                   press: () {
                     print(cart.isProductAddedToCart(widget.product));
-                    _showInfoDialog(context);
+                    _addParticipateDialog(context);
                     cartService.add(context, CartItem(product: widget.product));
                     print(cart.isProductAddedToCart(widget.product));
                   },
@@ -237,7 +305,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   text: "Delete",
                   press: () {
                     print(cart.isProductAddedToCart(widget.product));
-                    _showDeleteDialog(context);
+                    _deleteParticipateDialog(context);
                     cartService.remove(
                         context, CartItem(product: widget.product));
                     print(cart.isProductAddedToCart(widget.product));
