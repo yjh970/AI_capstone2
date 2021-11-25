@@ -17,11 +17,11 @@ class PopularProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     ProductSelectionService proSelection = Provider.of<ProductSelectionService>(context, listen: false);
     ProductService proService = Provider.of<ProductService>(context, listen: false);
-    List <Product> products = proService.getProducts();
+    List<Product> products = proService.getProducts();
 
     return Column(
       children: [
-        SectionTitle(text: "Popular Product", press: () {
+        SectionTitle(text: "New Meetings", press: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MoreDetails()),
@@ -37,7 +37,7 @@ class PopularProducts extends StatelessWidget {
               ...List.generate(
                 3, //seeMore button을 구현하게 된다면 여기 length을 지정하고, seemore 을 클릭했을 때 길이를 demoProducts.length으로 지정
                 (index) {
-                  if (products[index].isPopular == true) //Product.dart에서 isPopular = false라고 지정하면 안나옴.
+                  if (products[index].isNew == true) //Product.dart에서 isPopular = false라고 지정하면 안나옴.
                     return ProductCard(
                       product: products[index],
                       onCardClick: (){

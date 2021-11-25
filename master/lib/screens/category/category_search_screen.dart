@@ -24,9 +24,11 @@ class CategorySearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List <Product> products = [];
     ProductSelectionService proSelection = Provider.of<ProductSelectionService>(context, listen: false);
     ProductService proService = Provider.of<ProductService>(context, listen: false);
-    List <Product> products = proService.getProducts();
+
+    products = proService.getProducts();
     return Scaffold(
       appBar: AppBar(
         title: Text(category),
@@ -112,7 +114,7 @@ class CategorySearchScreen extends StatelessWidget {
                   ...List.generate(
                     3,
                         (index) {
-                      if (products[index].isPopular == true) //Product.dart에서 isPopular = false라고 지정하면 안나옴.
+                      if (products[index].isNew == true) //Product.dart에서 isPopular = false라고 지정하면 안나옴.
                         return ProductCard(
                           product: products[index],
                           onCardClick: () {
