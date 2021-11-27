@@ -1,4 +1,3 @@
-
 import 'package:final_project/screens/senior/components/senior_introduction.dart';
 import 'package:final_project/screens/senior/components/senior_user.dart';
 import 'package:final_project/screens/senior/components/senior_qna.dart';
@@ -20,7 +19,6 @@ class Body extends StatelessWidget {
           SeniorMenu(
             icon: 'assets/icons/Add.svg',
             text: '미팅 추가',
-            
             press: (){
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -70,18 +68,18 @@ class Body extends StatelessWidget {
               );
             },
           ),
-        SeniorMenu(
+          SeniorMenu(
             icon: 'assets/icons/Rating.svg',
             text: '평점 확인',
-          press: (){
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return SeniorRating();
-                },
-              ),
-            );
-          },
+            press: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return SeniorRating();
+                  },
+                ),
+              );
+            },
           ),
           SeniorMenu(
             icon: 'assets/icons/Question mark.svg',

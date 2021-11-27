@@ -77,7 +77,6 @@ class _SignFormState extends State<SignForm> {
             press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-
                 dynamic result =
                     await _auth.SignInWithEmailAndPassword(email, password);
                 FirebaseFirestore? _instance;

@@ -1,5 +1,6 @@
 import 'package:final_project/models/app_user.dart';
-import 'package:final_project/services/database.dart';
+import 'package:final_project/services/accountDatabase.dart';
+import 'package:final_project/services/productDatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class AuthService extends ChangeNotifier {
       User? user = result.user;
 
       //create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData(
+      await AccountDatabaseService(uid: user!.uid).updateUserData(
           email, password, name!, jobGroup!, phoneNumber!, specification!);
       return _userFromFirebaseUser(user);
 

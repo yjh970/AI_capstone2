@@ -4,7 +4,7 @@ import 'package:final_project/components/default_button.dart';
 import 'package:final_project/components/form_error.dart';
 import 'package:final_project/screens/sign_in/sign_in_screen.dart';
 import 'package:final_project/services/auth.dart';
-import 'package:final_project/services/database.dart';
+import 'package:final_project/services/accountDatabase.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
