@@ -19,13 +19,6 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-
-    CartService cartService = Provider.of<CartService>(context, listen: false);
-    // cartService.loadCartItemsFromFirebase(context);
-    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
-    // favoriteService.loadFavoriteItemsFromFirebase(context);
-
-
     return SafeArea(
         child: SingleChildScrollView(
       child: Column(

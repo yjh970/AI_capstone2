@@ -12,20 +12,17 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    ProductSelectionService proSelection = Provider.of<ProductSelectionService>(context, listen: false);
+    ProductSelectionService proSelection =
+        Provider.of<ProductSelectionService>(context, listen: false);
     selectedProduct = proSelection.selectedProduct;
 
     return Scaffold(
       backgroundColor: Color(0xFFF5F6F9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-        child: CustomAppBar(
-          rating: this.selectedProduct!.rating,
-        ),
+        child: CustomAppBar(),
       ),
-      body: Body(
-      ),
+      body: Body(),
     );
   }
 }

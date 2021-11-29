@@ -2,6 +2,7 @@ import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/loading/loading_screen.dart';
+import 'package:final_project/screens/loading/loading_screen_details.dart';
 import 'package:final_project/screens/loading/loading_screen_home.dart';
 import 'package:final_project/screens/loading/loading_screen_profile.dart';
 import 'package:final_project/screens/login_success/login_success_screen.dart';
@@ -19,6 +20,7 @@ final Map<String, WidgetBuilder> routes = {
   LoadingScreen.routeName: (context) => LoadingScreen(),
   LoadingScreenHome.routeName: (context) => LoadingScreenHome(),
   LoadingScreenProfile.routeName: (context) => LoadingScreenProfile(),
+  LoadingScreenDetails.routeName: (context) => LoadingScreenDetails(),
   SplashScreen.routeName: (context) => SplashScreen(),
   SignInScreen.routeName: (context) => SignInScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),

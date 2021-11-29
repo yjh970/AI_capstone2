@@ -5,6 +5,7 @@ import 'package:final_project/screens/splash/splash_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/favoriteService.dart';
+import 'package:final_project/services/product_review_service.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:final_project/services/user_product_service.dart';
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider(
           create: (context) => UserProductService(),
+        ),
+        Provider(
+          create: (context) => ProductReviewService(),
         ),
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => CartService()),

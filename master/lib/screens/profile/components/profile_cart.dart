@@ -62,13 +62,37 @@ class _ProfileCartState extends State<ProfileCart> {
                         width: 20,
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            Text(itemProduct.title,
-                                style: TextStyle(color: kPrimaryColor)),
-                            Text(itemProduct.name,
-                                style: TextStyle(color: kPrimaryColor)),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(itemProduct.title,
+                                    style: TextStyle(color: kPrimaryColor)),
+                                Text(itemProduct.name,
+                                    style: TextStyle(color: kPrimaryColor)),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: (){
+                                print("Tapped");
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 10,
+                                          offset: Offset.zero)
+                                    ]),
+                                child: Text("후기 등록", style: TextStyle(color: Colors.black),),
+                              ),
+                            )
                           ],
                         ),
                       )

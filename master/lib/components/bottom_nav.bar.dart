@@ -1,4 +1,5 @@
 import 'package:final_project/screens/category/category_screen.dart';
+import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/loading/loading_screen_home.dart';
 import 'package:final_project/screens/loading/loading_screen_profile.dart';
 import 'package:final_project/screens/notification/notification_screen.dart';
@@ -45,7 +46,7 @@ class BottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, LoadingScreenHome.routeName)
+                    Navigator.pushNamed(context, HomeScreen.routeName)
               ),
               IconButton(
                 icon: SvgPicture.asset(
