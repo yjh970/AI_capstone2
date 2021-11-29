@@ -26,9 +26,6 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-
-    ProductSelectionService proSelection =
-    Provider.of<ProductSelectionService>(context, listen: false);
     FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
 
 

@@ -1,7 +1,6 @@
 import 'package:final_project/screens/category/category_screen.dart';
-import 'package:final_project/screens/home/home_screen.dart';
-import 'package:final_project/screens/profile/profile_screen.dart';
-import 'package:final_project/screens/category/category_screen.dart';
+import 'package:final_project/screens/loading/loading_screen_home.dart';
+import 'package:final_project/screens/loading/loading_screen_profile.dart';
 import 'package:final_project/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,7 +45,7 @@ class BottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, HomeScreen.routeName),
+                    Navigator.pushNamed(context, LoadingScreenHome.routeName)
               ),
               IconButton(
                 icon: SvgPicture.asset(
@@ -75,7 +74,7 @@ class BottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                Navigator.pushNamed(context, ProfileScreen.routeName),
+                Navigator.pushNamed(context, LoadingScreenProfile.routeName),
               ),
             ],
           )),

@@ -7,6 +7,7 @@ import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
+import 'package:final_project/services/user_product_service.dart';
 import 'package:final_project/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider(
           create: (context) => ProductService(),
+        ),
+        Provider(
+          create: (context) => UserProductService(),
         ),
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => CartService()),
