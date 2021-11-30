@@ -19,7 +19,6 @@ class Body extends StatelessWidget {
           SeniorMenu(
             icon: 'assets/icons/Add.svg',
             text: '미팅 추가',
-
             press: (){
               Navigator.of(context).push(
                 MaterialPageRoute(
