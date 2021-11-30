@@ -3,6 +3,7 @@ import 'package:final_project/constants.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/screens/details/details_screen.dart';
+import 'package:final_project/screens/profile/components/product_add_rating.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/product_selection_service.dart';
@@ -23,8 +24,6 @@ class _ProfileCartState extends State<ProfileCart> {
   Widget build(BuildContext context) {
     ProductSelectionService proSelection =
         Provider.of<ProductSelectionService>(context, listen: false);
-    ProductService proService =
-        Provider.of<ProductService>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text("수강 내역"),
@@ -77,6 +76,13 @@ class _ProfileCartState extends State<ProfileCart> {
                             GestureDetector(
                               onTap: (){
                                 print("Tapped");
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return ProductAddRating(productTitle: itemProduct.title);
+                                    },
+                                  ),
+                                );
                               },
                               child: Container(
                                 margin: EdgeInsets.all(10),

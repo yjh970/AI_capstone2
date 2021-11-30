@@ -31,6 +31,7 @@ class _LoadingScreenDetailsState extends State<LoadingScreenDetails> {
 
 
     Future.delayed(Duration(seconds: 3), () async {
+      print(title);
 
       // await for the Firebase initialization to occur
 

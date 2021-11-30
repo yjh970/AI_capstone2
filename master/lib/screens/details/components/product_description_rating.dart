@@ -1,6 +1,8 @@
+import 'package:final_project/constants.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/Review.dart';
 import 'package:final_project/screens/details/components/review_container.dart';
+import 'package:final_project/screens/details/components/top_rounded_container.dart';
 import 'package:final_project/services/product_review_service.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +22,21 @@ class ProductDescriptionRating extends StatefulWidget {
 class _ProductDescriptionRatingState extends State<ProductDescriptionRating> {
   @override
   Widget build(BuildContext context) {
+    bool exists = false;
     ProductSelectionService proSelection =
         Provider.of<ProductSelectionService>(context, listen: false);
     widget.product = proSelection.selectedProduct;
     ProductReviewService revService =
         Provider.of<ProductReviewService>(context, listen: false);
     List<Review> reviews = revService.getProductReviews();
+    print(reviews);
 
-    double averageRating =
-        reviews.map((m) => m.rating).reduce((a, b) => a + b) / reviews.length;
+    // double averageRating =
+    //     reviews.map((m) => m.rating).reduce((a, b) => a + b) / reviews.length;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+
       child: Column(
         children: [
           Align(
@@ -56,10 +61,19 @@ class _ProductDescriptionRatingState extends State<ProductDescriptionRating> {
               const SizedBox(
                 width: 5,
               ),
-              Text(
-                averageRating.toString(),
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+              Column(
+                children: [
+                  if(reviews.length != 0)...[
+                    Text(
+                      (reviews.map((m) => m.rating).reduce((a, b) => a + b) / reviews.length).toStringAsFixed(1),
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                    ),
+                  ] else ...[
+                    Text("0",  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                  ]
+                ],
               ),
+
               const SizedBox(
                 width: 10,
               ),
@@ -74,40 +88,34 @@ class _ProductDescriptionRatingState extends State<ProductDescriptionRating> {
           ),
           Column(
             children: [
-              for (int i = 0; i < reviews.length; i++)
-                Column(
-                  children: [
-                    reviewContainer(
-                      id: reviews[i].id,
-                      review: reviews[i].reviewString,
-                      score: reviews[i].rating,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ]
+              if(reviews.length != 0)...[
+                for (int i = 0; i < reviews.length; i++)
+                  Column(
+                      children: [
+                        reviewContainer(
+                          id: reviews[i].id,
+                          review: reviews[i].reviewString,
+                          score: reviews[i].rating,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ]
+                  ),
+              ],
+              if (reviews.isEmpty == true) ...[
+                TopRoundedContainer(
+                  height: 100,
+                  color: Colors.white,
+                  child: Text("등록된 후기가 없습니다.", style: TextStyle(fontSize: 30),)
                 ),
-
+              ]
             ],
           )
+
+
         ],
       ),
     );
   }
 }
-// ListView.builder(
-// itemBuilder: (context, i) {
-// return Column(
-// children: [
-// reviewContainer(
-// id: reviews[i].id,
-// review: reviews[i].reviewString,
-// score: reviews[i].rating,
-// ),
-// SizedBox(
-// height: 20,
-// ),
-// ],
-// );
-// },
-// )

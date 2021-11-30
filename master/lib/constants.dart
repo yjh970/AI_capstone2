@@ -33,4 +33,5 @@ const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kJobGroupNullError = "Please Enter your Job Group";
 const String kPriceNullError = "Please Enter the price of the Meeting";
 const String kImageNullError = "Please Enter a path for the Image";
+const String kRatingNullError = "Please Enter the rating of the Meeting";
 

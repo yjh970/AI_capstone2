@@ -9,32 +9,32 @@ import 'package:final_project/components/bottom_nav.bar.dart';
 import 'package:final_project/screens/senior/components/body.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/productDatabase.dart';
+import 'package:final_project/services/productReviewDatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/constants.dart';
 
 import 'package:final_project/enums.dart';
 
 class ProductAddRating extends StatefulWidget {
+  final String productTitle;
+  const ProductAddRating  ({ Key? key, required this.productTitle }): super(key: key);
+
+
+
   @override
   State<ProductAddRating> createState() => _ProductAddRating();
 }
 
 class _ProductAddRating extends State<ProductAddRating> {
-  TextEditingController? _meetingDescriptionController,
-      _mentorDescriptionController,
-      _priceController,
-      _meetingTitleController,
-      _meetingImage1Controller,
-      _meetingImage2Controller;
-  //Accounts에서 이름 정보 받아올지 직접 입력하게할지 고민
+  TextEditingController? _ratingTextController,
+      _ratingController;
 
-  String? meetingDescription;
-  String? mentorDescription;
-  int? price;
-  String? meetingTitle;
-  List<String> meetingImage = ['image1','image2'];
+  String? ratingText;
+  double? rating;
+
   final List<String?> errors = [];
   final AuthService _auth = AuthService();
+
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -53,21 +53,16 @@ class _ProductAddRating extends State<ProductAddRating> {
   @override
   void initState() {
     super.initState();
-    _meetingImage1Controller = TextEditingController();
-    _meetingImage2Controller = TextEditingController();
-    _meetingTitleController =  TextEditingController();
-    _mentorDescriptionController =  TextEditingController();
-    _meetingDescriptionController =  TextEditingController();
-    _priceController =  TextEditingController();
+    _ratingController = TextEditingController();
+    _ratingTextController = TextEditingController();
   }
 
-  void _addMeetingDialog(BuildContext context) {
+  void _addReviewDialog(BuildContext context) {
     // set up the buttons
     Widget okayButton = TextButton(
       child: Text("확인"),
       onPressed: () {
         Navigator.of(context).pop();
-
         Navigator.pushNamed(context, LoadingScreenHome.routeName);
       },
     );
@@ -75,11 +70,11 @@ class _ProductAddRating extends State<ProductAddRating> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        "미팅 추가 확인",
+        "후기 추가 확인",
         style: TextStyle(fontSize: 20),
       ),
       content: Text(
-        "해당 미팅이 정상적으로 등록되었습니다!",
+        "해당 후기가 정상적으로 등록되었습니다!",
         style: TextStyle(fontSize: 16),
       ),
       actions: [
@@ -96,27 +91,18 @@ class _ProductAddRating extends State<ProductAddRating> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("미팅 추가")),
+        appBar: AppBar(title: Text("후기 등록")),
         bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.profile),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              buildMeetingTitleField(),
+              buildRatingField(),
               SizedBox(height: 30),
-              buildMeetingDescriptionField(),
+              buildRatingTextField(),
               SizedBox(height: 30),
-              buildMentorDescriptionField(),
-              SizedBox(height: 30),
-              buildMeetingPriceField(),
-              SizedBox(height: 30),
-              buildMeetingImageField1(),
-              SizedBox(height: 30),
-              buildMeetingImageField2(),
-              SizedBox(height: 30,),
               FormError(errors: errors),
               SizedBox(height: 40),
               DefaultButton(
@@ -127,239 +113,47 @@ class _ProductAddRating extends State<ProductAddRating> {
                     var docSnapshot =
                     await collection.doc(_auth.getCurrentUser()).get();
                     var data = docSnapshot.data();
-                    var name = data?['name'];
+                    // var id = data?['id'];
 
-                    String meetingDescription =
-                        _meetingDescriptionController!.text;
-                    String mentorDescription =
-                        _mentorDescriptionController!.text;
-                    int price = int.parse(_priceController!.text);
-                    String meetingTitle = _meetingTitleController!.text;
+                    String reviewString =
+                        _ratingTextController!.text;
+                    double rating = double.parse(_ratingController!.text);
                     String id = _auth.getCurrentUser();
-                    meetingImage[0] = _meetingImage1Controller!.text;
-                    meetingImage[1] = _meetingImage2Controller!.text;
-                    String mentorName = name;
-                    print(mentorDescription);
-                    print(mentorDescription);
-                    print(price);
-                    print(meetingTitle);
+                    print(reviewString);
+                    print(rating);
                     print(id);
-                    print(mentorName);
-                    print(meetingImage);
-                    print(meetingImage[0]);
-                    print(meetingImage[1]);
 
-                    await ProductDatabaseService().updateProductData(
-                        meetingTitle,
-                        mentorName,
-                        meetingDescription,
-                        mentorDescription,
-                        price,
+                    await ReviewDatabaseService(title: widget.productTitle).updateReviewData(
                         id,
-                        meetingImage);
+                        reviewString,
+                        rating);
 
-                    _addMeetingDialog(context);
+                    _addReviewDialog(context);
                   }),
             ],
           ),
         ));
   }
 
-  Column buildMeetingImageField1() {
+
+
+
+  Column buildRatingTextField() {
     return Column(
       children: [
         Container(
           height: 30,
           child: Center(
             child: Text(
-              '미팅 이미지1',
+              '후기 내용',
               style: TextStyle(color: kPrimaryColor),
               textAlign: TextAlign.left,
             ),
           ),
         ),
         TextFormField(
-          controller: _meetingImage1Controller,
-          keyboardType: TextInputType.text,
-          //       onSaved: (newValue) {
-          //         setState(() {
-          //           meetingImage[0] = newValue!;
-          //         });
-          // },
-          onChanged: (value) {
-            if (value.isNotEmpty) {
-              removeError(error: kImageNullError);
-            }
-            print(value);
-          },
-          validator: (value) {
-            if (value!.isEmpty) {
-              addError(error: kImageNullError);
-              return "";
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            labelText: '사진1',
-            hintText: "사진1의 주소를 입력해주세요",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Column buildMeetingImageField2() {
-    return Column(
-      children: [
-        Container(
-          height: 30,
-          child: Center(
-            child: Text(
-              '미팅 이미지2',
-              style: TextStyle(color: kPrimaryColor),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _meetingImage2Controller,
-          keyboardType: TextInputType.text,
-          // onSaved: (newValue) {
-          //   setState(() {
-          //     meetingImage[1] = newValue!;
-          //   });
-          // },
-          onChanged: (value) {
-            if (value.isNotEmpty) {
-              removeError(error: kImageNullError);
-            }
-            print(value);
-          },
-          validator: (value) {
-            if (value!.isEmpty) {
-              addError(error: kImageNullError);
-              return "";
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            labelText: '사진2',
-            hintText: "사진2의 주소를 입력해주세요",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-        ),
-      ],
-    );
-  }
-
-
-  Column buildMeetingDescriptionField() {
-    return Column(
-      children: [
-        Container(
-          height: 30,
-          child: Center(
-            child: Text(
-              '미팅 소개',
-              style: TextStyle(color: kPrimaryColor),
-            ),
-          ),
-        ),
-        Container(
-          height: 200,
-          child: new ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: 200.0,
-            ),
-            child: new Scrollbar(
-              child: new SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                reverse: true,
-                child: SizedBox(
-                  height: 200.0,
-                  child: new TextFormField(
-                    controller: _meetingDescriptionController,
-                    onSaved: (newValue) => meetingDescription = newValue,
-                    onChanged: (value) {
-                      print(value);
-                    },
-                    maxLines: 100,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '미팅 소개를 입력하세요.',
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Column buildMentorDescriptionField() {
-    return Column(
-      children: [
-        Container(
-          height: 30,
-          child: Center(
-            child: Text(
-              '강사 소개',
-              style: TextStyle(color: kPrimaryColor),
-            ),
-          ),
-        ),
-        Container(
-          height: 200,
-          child: new ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: 200.0,
-            ),
-            child: new Scrollbar(
-              child: new SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                reverse: true,
-                child: SizedBox(
-                  height: 200.0,
-                  child: new TextFormField(
-                    controller: _mentorDescriptionController,
-                    onSaved: (newValue) => mentorDescription = newValue,
-                    onChanged: (value) {
-                      print(value);
-                    },
-                    maxLines: 100,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '강사 소개를 입력하세요.',
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Column buildMeetingTitleField() {
-    return Column(
-      children: [
-        Container(
-          height: 30,
-          child: Center(
-            child: Text(
-              '미팅 제목',
-              style: TextStyle(color: kPrimaryColor),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _meetingTitleController,
-          onSaved: (newValue) => meetingTitle = newValue,
+          controller: _ratingTextController,
+          onSaved: (newValue) => ratingText = newValue,
           onChanged: (value) {
             print(value);
             return null;
@@ -367,48 +161,47 @@ class _ProductAddRating extends State<ProductAddRating> {
           keyboardType: TextInputType.text,
           maxLines: null,
           decoration: new InputDecoration(
-              border: InputBorder.none, hintText: '미팅 제목을 입력하세요.'),
+              border: InputBorder.none, hintText: '후기 내용을 작성해주세요.'),
         ),
       ],
     );
   }
 
-  Column buildMeetingPriceField() {
+  Column buildRatingField() {
     return Column(
       children: [
         Container(
           height: 30,
           child: Center(
             child: Text(
-              '미팅 가격',
+              '평점',
               style: TextStyle(color: kPrimaryColor),
               textAlign: TextAlign.left,
             ),
           ),
         ),
         TextFormField(
-          controller: _priceController,
+          controller: _ratingController,
           keyboardType: TextInputType.phone,
-          onSaved: (newValue) => price = newValue as int?,
+          onSaved: (newValue) => rating = newValue as double?,
           onChanged: (value) {
             if (value.isNotEmpty) {
-              removeError(error: kPriceNullError);
+              removeError(error: kRatingNullError);
             }
             print(value);
             return null;
           },
           validator: (value) {
             if (value!.isEmpty) {
-              addError(error: kPriceNullError);
+              addError(error: kRatingNullError);
               return "";
             }
             return null;
           },
           decoration: InputDecoration(
-            labelText: '가격',
-            hintText: "미팅의 가격을 입력해주세요.",
+            labelText: '평점',
+            hintText: "5점 만점의 평점을 입력해주세요",
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            suffixText: '원',
           ),
         ),
       ],
