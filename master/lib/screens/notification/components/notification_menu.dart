@@ -1,5 +1,4 @@
 
-import 'package:final_project/screens/notification/components/notice.dart';
 import 'package:final_project/screens/notification/components/body.dart';
 import 'package:flutter/material.dart';
 

@@ -1,9 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:final_project/screens/details/components/body.dart';
-
-
 
 class SeniorUser extends StatelessWidget {
 

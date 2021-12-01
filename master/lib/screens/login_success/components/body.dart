@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/default_button.dart';
-import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/loading/loading_screen_home.dart';
-import 'package:final_project/screens/sign_in/sign_in_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:flutter/material.dart';
 

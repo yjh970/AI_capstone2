@@ -7,7 +7,6 @@ import 'package:final_project/screens/senior/senior_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../size_config.dart';
 
 class Body extends StatefulWidget {
   @override

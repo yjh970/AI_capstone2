@@ -1,12 +1,7 @@
 
 import 'package:final_project/screens/home/components/popular_products.dart';
 import 'package:final_project/screens/home/components/special_offers.dart';
-import 'package:final_project/services/cartService.dart';
-import 'package:final_project/services/favoriteService.dart';
-import 'package:final_project/services/product_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../size_config.dart';
 import 'event_banner.dart';

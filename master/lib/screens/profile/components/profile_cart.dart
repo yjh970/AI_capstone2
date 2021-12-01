@@ -5,13 +5,10 @@ import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/profile/components/product_add_qna.dart';
 import 'package:final_project/screens/profile/components/product_add_rating.dart';
-import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/product_selection_service.dart';
-import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:final_project/screens/details/components/body.dart';
 
 class ProfileCart extends StatefulWidget {
   @override

@@ -13,7 +13,6 @@ import 'package:final_project/screens/sign_in/sign_in_screen.dart';
 import 'package:final_project/screens/sign_up/sign_up_screen.dart';
 import 'package:final_project/screens/splash/splash_screen.dart';
 import 'package:final_project/screens/notification/notification_screen.dart';
-import 'package:final_project/screens/senior/senior_screen.dart';
 import 'package:flutter/widgets.dart';
 
 final Map<String, WidgetBuilder> routes = {

@@ -1,18 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/models/Product.dart';
-import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/models/favorite_item.dart';
 import 'package:final_project/screens/details/details_screen.dart';
-import 'package:final_project/services/auth.dart';
-import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:final_project/screens/details/components/body.dart';
-
 class ProfileFavorite extends StatefulWidget {
   @override
   State<ProfileFavorite> createState() => _ProfileFavoriteState();

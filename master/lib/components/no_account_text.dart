@@ -1,5 +1,4 @@
 import 'package:final_project/constants.dart';
-import 'package:final_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:final_project/screens/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 

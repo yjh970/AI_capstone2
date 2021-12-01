@@ -3,7 +3,6 @@ import 'package:final_project/models/Product.dart';
 import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

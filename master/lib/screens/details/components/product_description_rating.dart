@@ -1,4 +1,4 @@
-import 'package:final_project/constants.dart';
+
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/Review.dart';
 import 'package:final_project/screens/details/components/review_container.dart';

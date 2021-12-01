@@ -1,10 +1,6 @@
 import 'package:final_project/constants.dart';
-import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
-import 'package:final_project/screens/splash/splash_screen.dart';
-import 'package:final_project/services/product_service.dart';
 import 'package:final_project/services/user_product_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

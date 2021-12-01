@@ -3,7 +3,6 @@ import 'package:final_project/models/QnA.dart';
 import 'package:final_project/screens/details/components/questions_container.dart';
 import 'package:final_project/screens/details/components/top_rounded_container.dart';
 import 'package:final_project/services/product_qna_service.dart';
-import 'package:final_project/services/product_review_service.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

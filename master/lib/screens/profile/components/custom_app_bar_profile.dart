@@ -1,7 +1,6 @@
 import 'package:final_project/components/rounded_icon_button.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../size_config.dart';
 

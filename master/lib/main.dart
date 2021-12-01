@@ -1,7 +1,5 @@
-import 'package:final_project/constants.dart';
 import 'package:final_project/routes.dart';
 import 'package:final_project/screens/loading/loading_screen.dart';
-import 'package:final_project/screens/splash/splash_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/favoriteService.dart';
