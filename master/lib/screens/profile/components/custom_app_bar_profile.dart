@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../size_config.dart';
 
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBarProfile extends StatelessWidget {
 
   @override
   // AppBar().preferredSize.height provide us the height that apply on our app bar

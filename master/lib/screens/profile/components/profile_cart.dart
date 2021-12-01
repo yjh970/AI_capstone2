@@ -3,6 +3,7 @@ import 'package:final_project/constants.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/screens/details/details_screen.dart';
+import 'package:final_project/screens/profile/components/product_add_qna.dart';
 import 'package:final_project/screens/profile/components/product_add_rating.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
@@ -73,35 +74,65 @@ class _ProfileCartState extends State<ProfileCart> {
                               ],
                             ),
                             SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: (){
-                                print("Tapped");
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return ProductAddRating(productTitle: itemProduct.title);
+                            Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      print("Tapped");
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ProductAddRating(productTitle: itemProduct.title);
+                                          },
+                                        ),
+                                      );
                                     },
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(30),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black.withOpacity(0.1),
+                                                blurRadius: 10,
+                                                offset: Offset.zero)
+                                          ]),
+                                      child: Text("후기 등록", style: TextStyle(color: Colors.black),),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(10),
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 10,
-                                          offset: Offset.zero)
-                                    ]),
-                                child: Text("후기 등록", style: TextStyle(color: Colors.black),),
+                                  GestureDetector(
+                                    onTap: (){
+                                      print("Tapped");
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ProductAddQna(productTitle: itemProduct.title);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(30),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black.withOpacity(0.1),
+                                                blurRadius: 10,
+                                                offset: Offset.zero)
+                                          ]),
+                                      child: Text("질문하기 ", style: TextStyle(color: Colors.black),),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
                           ],
-                        ),
-                      )
+                      ),
+                      ),
                     ],
                   ),
                 ),

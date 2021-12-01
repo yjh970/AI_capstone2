@@ -3,6 +3,7 @@ import 'package:final_project/models/Product.dart';
 import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/screens/splash/splash_screen.dart';
+import 'package:final_project/services/product_qna_service.dart';
 import 'package:final_project/services/product_review_service.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
@@ -28,16 +29,21 @@ class _LoadingScreenDetailsState extends State<LoadingScreenDetails> {
     widget.product = proSelection.selectedProduct;
     ProductReviewService revService = Provider.of<ProductReviewService>(context, listen: false);
     String title = widget.product!.title;
+    ProductQnAService qService = Provider.of<ProductQnAService>(context, listen: false);
 
 
-    Future.delayed(Duration(seconds: 3), () async {
+
+    Future.delayed(Duration(seconds: 2), () async {
       print(title);
 
       // await for the Firebase initialization to occur
 
+
       revService.getProductReviewFromFirebase(title)
           .then((value) {
-        Navigator.restorablePushNamed(context, DetailsScreen.routeName);
+        qService.getProductQnaFromFirebase(title).then((value) {
+          Navigator.restorablePushNamed(context, DetailsScreen.routeName);
+        });
       });
     });
 

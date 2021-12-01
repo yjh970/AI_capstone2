@@ -15,7 +15,7 @@ class LoadingScreenHome extends StatelessWidget {
 
     ProductService proService = Provider.of<ProductService>(context, listen: false);
 
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 2), () async {
 
       // await for the Firebase initialization to occur
 

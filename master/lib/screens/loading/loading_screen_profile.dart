@@ -17,7 +17,7 @@ class LoadingScreenProfile extends StatelessWidget {
 
     UserProductService proUserService = Provider.of<UserProductService>(context, listen: false);
 
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 2), () async {
 
       // await for the Firebase initialization to occur
 

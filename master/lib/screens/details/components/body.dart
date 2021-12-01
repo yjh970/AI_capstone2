@@ -279,7 +279,6 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                     ProductDescriptionRating(key: ratingKey,
                         ),
                     ProductDescriptionQnA(
-                      product: widget.product!,
                       key: questionsKey,
                     )
                   ]),

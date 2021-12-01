@@ -4,7 +4,7 @@ import 'package:final_project/services/product_selection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'components/custom_app_bar.dart';
+import 'components/custom_app_bar_details.dart';
 
 class DetailsScreen extends StatelessWidget {
   static String routeName = '/details';
@@ -20,7 +20,7 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: Color(0xFFF5F6F9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-        child: CustomAppBar(),
+        child: CustomAppBarDetails(),
       ),
       body: Body(),
     );
