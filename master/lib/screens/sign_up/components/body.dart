@@ -1,6 +1,4 @@
-import 'package:final_project/components/custom_suffix_icon.dart';
-import 'package:final_project/components/default_button.dart';
-import 'package:final_project/components/form_error.dart';
+
 import 'package:final_project/components/social_card.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/screens/sign_up/components/signup_form.dart';

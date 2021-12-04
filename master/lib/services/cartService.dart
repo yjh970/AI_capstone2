@@ -1,12 +1,8 @@
-import 'dart:async';
+
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/Product.dart';
-import 'package:final_project/models/app_user.dart';
 import 'package:final_project/models/cart_item.dart';
-import 'package:final_project/services/accountDatabase.dart';
-import 'package:final_project/services/product_selection_service.dart';
-import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

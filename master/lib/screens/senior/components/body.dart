@@ -5,8 +5,6 @@ import 'package:final_project/screens/senior/components/senior_rating.dart';
 import 'package:final_project/screens/senior/components/senior_status.dart';
 import 'package:final_project/screens/senior/components/senior_add.dart';
 import 'package:final_project/screens/senior/components/senior_menu.dart';
-import 'package:final_project/screens/profile/components/profile_picture.dart';
-import 'package:final_project/screens/senior/components/senior_status.dart';
 import 'package:flutter/material.dart';
 
 

@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/models/Product.dart';
-
-import 'auth.dart';
 
 class ProductDatabaseService {
 

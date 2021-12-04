@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../../constants.dart';
 
 class questionsContainer extends StatelessWidget {
   const questionsContainer({
     Key? key,
     required this.id,
     required this.question,
-    required this.isReplied,
+    required this.date,
   }) : super(key: key);
 
   final String? id;
   final String? question;
-  final bool isReplied;
+  final String? date;
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(
-        now.year, now.month, now.day, now.hour, now.minute, now.second);
 
     return Container(
       child: Row(
@@ -40,11 +34,15 @@ class questionsContainer extends StatelessWidget {
                     SizedBox(
                       width: 5,
                     ),
-                    Text(
-                      date.toString(),
-                      style: TextStyle(fontSize: 10),
-                    ),
+
                   ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  date!,
+                  style: TextStyle(fontSize: 10),
                 ),
                 SizedBox(
                   height: 5,
@@ -60,54 +58,54 @@ class questionsContainer extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                new Container(
-                  child: isReplied == true
-                      ? new Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/Lock.svg',
-                                width: 30,
-                                height: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                '해당 질문은 답변 완료되었습니다.',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        )
-                      : new Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SvgPicture.asset('assets/icons/Error.svg'),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '답변이 아직 등록되지 않았습니다.',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ),
-                )
+                // new Container(
+                //   child: isReplied == true
+                //       ? new Container(
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: [
+                //               SvgPicture.asset(
+                //                 'assets/icons/Lock.svg',
+                //                 width: 30,
+                //                 height: 20,
+                //               ),
+                //               SizedBox(
+                //                 width: 5,
+                //               ),
+                //               Text(
+                //                 '해당 질문은 답변 완료되었습니다.',
+                //                 style: TextStyle(fontSize: 13),
+                //               ),
+                //             ],
+                //           ),
+                //         )
+                //       : new Container(
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: [
+                //               SvgPicture.asset('assets/icons/Error.svg'),
+                //               SizedBox(
+                //                 width: 20,
+                //               ),
+                //               Text(
+                //                 '답변이 아직 등록되지 않았습니다.',
+                //                 style: TextStyle(fontSize: 13),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                // )
               ],
             ),
           ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-          Text(
-            isReplied ? "답변 완료" : "답변 미완료",
-            style: TextStyle(
-              color: kPrimaryColor,
-            ),
-            textAlign: TextAlign.right,
-          ),
+          // SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+          // Text(
+          //   isReplied ? "답변 완료" : "답변 미완료",
+          //   style: TextStyle(
+          //     color: kPrimaryColor,
+          //   ),
+          //   textAlign: TextAlign.right,
+          // ),
         ],
       ),
     );

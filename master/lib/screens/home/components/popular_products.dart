@@ -1,8 +1,8 @@
 import 'package:final_project/components/product_card.dart';
 import 'package:final_project/models/Product.dart';
-import 'package:final_project/screens/details/details_screen.dart';
 import 'package:final_project/screens/home/components/more_details.dart';
 import 'package:final_project/screens/home/components/section_title.dart';
+import 'package:final_project/screens/loading/loading_screen_details.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class PopularProducts extends StatelessWidget {
                       product: products[index],
                       onCardClick: (){
                         proSelection.selectedProduct = products[index];
-                        Navigator.pushNamed(context, DetailsScreen.routeName);
+                        Navigator.pushNamed(context, LoadingScreenDetails.routeName);
                       },
                     );
                   return SizedBox.shrink();

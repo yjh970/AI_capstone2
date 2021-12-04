@@ -1,8 +1,6 @@
 import 'package:final_project/models/app_user.dart';
 import 'package:final_project/services/accountDatabase.dart';
-import 'package:final_project/services/productDatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AuthService extends ChangeNotifier {
