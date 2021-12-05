@@ -81,14 +81,6 @@ class _SignFormState extends State<SignForm> {
                     await _auth.SignInWithEmailAndPassword(email, password);
                 FirebaseFirestore? _instance;
                 _instance = FirebaseFirestore.instance;
-                _instance.collection('cart').doc(_auth.getCurrentUser())
-                    .set({
-                  'cartProduct' : null
-                });
-                _instance.collection('favorites').doc(_auth.getCurrentUser())
-                    .set({
-                  'favoriteProduct' : null
-                });
                 //Email이랑 비밀번호가 valid하면 login_success 화면으로 이동
                 if (result == null) {
                   setState(

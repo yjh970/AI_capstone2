@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/models/Favorite.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/favorite_item.dart';
 import 'package:final_project/services/favoriteService.dart';

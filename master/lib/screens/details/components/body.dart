@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/default_button.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
@@ -9,6 +10,8 @@ import 'package:final_project/screens/details/components/product_description_qna
 import 'package:final_project/screens/details/components/product_description_rating.dart';
 import 'package:final_project/screens/details/components/product_images.dart';
 import 'package:final_project/screens/details/components/top_rounded_container.dart';
+import 'package:final_project/services/auth.dart';
+import 'package:final_project/services/cartDatbase.dart';
 import 'package:final_project/services/cartService.dart';
 import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
@@ -27,6 +30,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> with TickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollController;
+  final AuthService _auth = AuthService();
 
   final meetingKey = new GlobalKey();
   final mentorKey = new GlobalKey();
@@ -38,6 +42,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
   double ratingHeight = 0;
   double questionHeight = 0;
   bool isTapToScroll = false;
+  bool isAdded = false;
 
   @override
   void initState() {
@@ -51,11 +56,26 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     ProductSelectionService proSelection =
         Provider.of<ProductSelectionService>(context, listen: false);
     widget.product = proSelection.selectedProduct;
     CartService cartService = Provider.of<CartService>(context, listen: false);
-    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
+    List<CartItem> cart = cartService.getProductCart();
+    print("cart");
+    FavoriteService favoriteService =
+        Provider.of<FavoriteService>(context, listen: false);
+
+    var contain = cart.where((element) => element.title == this.widget.product!.title);
+if(contain.isEmpty) {
+  isAdded = false;
+}
+print(isAdded);
+if(contain.isEmpty == false)
+  {
+    isAdded = true;
+  }
+print(isAdded);
 
     void _addParticipateDialog(BuildContext context) {
       // set up the buttons
@@ -195,60 +215,63 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           ProductImages(product: widget.product!),
           Align(
             alignment: Alignment.centerRight,
-            child: Consumer<FavoriteService>(
-                builder: (context, favorite, child) {
-                  Widget renderedButton;
-                  if (favorite.isProductAddedToFavorite(this.widget.product) == false){
-                    renderedButton = GestureDetector(
-                      onTap: (){
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                        favoriteService.add(context, FavoriteItem(product: this.widget.product));
-                        _addFavoriteDialog(context);
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                      }
-                      ,
-                      child: Container(
-                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-                        width: getProportionateScreenWidth(64),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFF5F6F9),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20))),
-                        child: SvgPicture.asset(
-                          'assets/icons/Heart Icon_2.svg',
-                          color: Color(0xFFDBDEE4),
-                        ),
-                      ),
-                    );
-                  }
-                  else{
-                    renderedButton = GestureDetector(
-                      onTap: (){
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                        favoriteService.remove(context, FavoriteItem(product: this.widget.product));
-                        _deleteFavoriteDialog(context);
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                      },
-
-                      child: Container(
-                        padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-                        width: getProportionateScreenWidth(64),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFFFE6E6),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20))),
-                        child: SvgPicture.asset(
-                          'assets/icons/Heart Icon_2.svg',
-                          color: Color(0xFFFF4848),
-                        ),
-                      ),
-                    );
-                  }
-                  return renderedButton;
-                }
-            ),
+            child:
+                Consumer<FavoriteService>(builder: (context, favorite, child) {
+              Widget renderedButton;
+              if (favorite.isProductAddedToFavorite(this.widget.product) ==
+                  false) {
+                renderedButton = GestureDetector(
+                  onTap: () {
+                    print(
+                        favorite.isProductAddedToFavorite(this.widget.product));
+                    favoriteService.add(
+                        context, FavoriteItem(product: this.widget.product));
+                    _addFavoriteDialog(context);
+                    print(
+                        favorite.isProductAddedToFavorite(this.widget.product));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                    width: getProportionateScreenWidth(64),
+                    decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F9),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20))),
+                    child: SvgPicture.asset(
+                      'assets/icons/Heart Icon_2.svg',
+                      color: Color(0xFFDBDEE4),
+                    ),
+                  ),
+                );
+              } else {
+                renderedButton = GestureDetector(
+                  onTap: () {
+                    print(
+                        favorite.isProductAddedToFavorite(this.widget.product));
+                    favoriteService.remove(
+                        context, FavoriteItem(product: this.widget.product));
+                    _deleteFavoriteDialog(context);
+                    print(
+                        favorite.isProductAddedToFavorite(this.widget.product));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                    width: getProportionateScreenWidth(64),
+                    decoration: BoxDecoration(
+                        color: Color(0xFFFFE6E6),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20))),
+                    child: SvgPicture.asset(
+                      'assets/icons/Heart Icon_2.svg',
+                      color: Color(0xFFFF4848),
+                    ),
+                  ),
+                );
+              }
+              return renderedButton;
+            }),
           ),
           TopRoundedContainer(
             height: 580,
@@ -276,8 +299,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         product: widget.product!, key: meetingKey),
                     ProductDescriptionMentor(
                         product: widget.product!, key: mentorKey),
-                    ProductDescriptionRating(key: ratingKey,
-                        ),
+                    ProductDescriptionRating(
+                      key: ratingKey,
+                    ),
                     ProductDescriptionQnA(
                       key: questionsKey,
                     )
@@ -286,35 +310,53 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Consumer<CartService>(
-            builder: (context, cart, child) {
+          StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('cart')
+                .doc(_auth.getCurrentUser())
+                .snapshots(),
+            builder: (context, snapshot) {
               Widget renderedButton;
-              if (cart.isProductAddedToCart(widget.product) == false) {
+              if (isAdded == false) {
                 renderedButton = DefaultButton(
                   text: "Participate",
-                  press: () {
-                    print(cart.isProductAddedToCart(widget.product));
+                  press: () async {
+                    String title = widget.product!.title;
+                    String name = widget.product!.name;
+                    String link = "https://zoom.us/j/96519344560?pwd=c2hteHFRRXBjUGVIWVNnTzhzR2pkUT09";
+
+                    print(title);
+                    print(name);
+
+                    await CartDatabaseService()
+                        .updateCartData(title, name, link);
+
                     _addParticipateDialog(context);
-                    cartService.add(context, CartItem(product: widget.product));
-                    print(cart.isProductAddedToCart(widget.product));
+
+                    setState(() {
+                      isAdded = !isAdded;
+                    });
                   },
                 );
-              } else {
+              } else{
                 renderedButton = DefaultButton(
                   text: "Delete",
-                  press: () {
-                    print(cart.isProductAddedToCart(widget.product));
+                  press: () async {
+                    String title = widget.product!.title;
+                    String name = widget.product!.name;
+                    String link = "https://zoom.us/j/96519344560?pwd=c2hteHFRRXBjUGVIWVNnTzhzR2pkUT09";
+                    await CartDatabaseService().deleteCartData(title, name, link);
                     _deleteParticipateDialog(context);
-                    cartService.remove(
-                        context, CartItem(product: widget.product));
-                    print(cart.isProductAddedToCart(widget.product));
+
+                    setState(() {
+                      isAdded = !isAdded;
+                    });
                   },
                 );
               }
               return renderedButton;
-              //
             },
-          ),
+          )
         ],
       ),
     );

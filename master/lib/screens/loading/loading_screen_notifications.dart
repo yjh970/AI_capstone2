@@ -1,4 +1,5 @@
 import 'package:final_project/constants.dart';
+import 'package:final_project/screens/notification/notification_screen.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
@@ -6,8 +7,8 @@ import 'package:final_project/services/user_product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoadingScreenProfile extends StatelessWidget {
-  static String routeName = '/loadingProfile';
+class LoadingScreenNotifications extends StatelessWidget {
+  static String routeName = '/loadingNotifications';
   final AuthService _auth = AuthService();
 
   @override
@@ -21,8 +22,10 @@ class LoadingScreenProfile extends StatelessWidget {
 
       proUserService.getUserProductsCollectionFromFirebase()
           .then((value) {
-            cartService.getProductCartFromFirebase(_auth.getCurrentUser());
-        Navigator.restorablePushNamed(context, ProfileScreen.routeName);
+        cartService.getProductCartFromFirebase(_auth.getCurrentUser()).then((value) {
+          Navigator.restorablePushNamed(context, NotificationScreen.routeName);
+        });
+
       });
     });
 

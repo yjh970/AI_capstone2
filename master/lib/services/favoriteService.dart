@@ -28,9 +28,9 @@ class FavoriteService extends ChangeNotifier {
     _instance!
         .collection('favorites')
         .doc(authService.getCurrentUser()) //need to get logged in account's id
-        .update({
+        .set({
       'favoriteProduct': FieldValue.arrayUnion([favMap])
-    }).then((value) {
+    }, SetOptions(merge: true)).then((value) {
       print(_items.length);
       notifyListeners();
     });

@@ -12,9 +12,6 @@ import 'package:final_project/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'models/Favorite.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -36,7 +33,6 @@ class MyApp extends StatelessWidget {
     //
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Favorite()),
         ChangeNotifierProvider(
           create: (context) => ProductSelectionService(),
         ),
@@ -52,8 +48,10 @@ class MyApp extends StatelessWidget {
         Provider(
           create: (context) => ProductQnAService(),
         ),
+        Provider(
+          create: (context) => CartService()
+        ),
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => CartService()),
         ChangeNotifierProvider(create: (context) => FavoriteService()),
       ],
       child: MaterialApp(

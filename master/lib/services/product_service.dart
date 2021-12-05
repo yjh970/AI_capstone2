@@ -11,6 +11,10 @@ class ProductService {
     return _products;
   }
 
+  List<Product> getProducts2(){
+    return _products;
+  }
+
 
   Future<void> getProductsCollectionFromFirebase() async{
     _products = [];
