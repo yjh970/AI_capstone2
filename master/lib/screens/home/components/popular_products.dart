@@ -18,7 +18,7 @@ class PopularProducts extends StatelessWidget {
     ProductSelectionService proSelection = Provider.of<ProductSelectionService>(context, listen: false);
     ProductService proService = Provider.of<ProductService>(context, listen: false);
     List<Product> popularProducts = proService.getProducts();
-    List<Product> popularProductsReversed = new List.from(popularProducts.reversed);
+    final List<Product> popularProductsReversed = new List.from(popularProducts.reversed);
     List<Product> recommendedProducts = proService.getProducts();
     List<Product> similarProducts = new List.from(recommendedProducts);
     recommendedProducts.shuffle();
