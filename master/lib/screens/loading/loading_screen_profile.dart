@@ -2,6 +2,7 @@ import 'package:final_project/constants.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
 import 'package:final_project/services/auth.dart';
 import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/user_product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,17 +13,24 @@ class LoadingScreenProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    UserProductService proUserService = Provider.of<UserProductService>(context, listen: false);
+    UserProductService proUserService =
+        Provider.of<UserProductService>(context, listen: false);
     CartService cartService = Provider.of<CartService>(context, listen: false);
+    FavoriteService favoriteService =
+        Provider.of<FavoriteService>(context, listen: false);
     Future.delayed(Duration(seconds: 2), () async {
-
       // await for the Firebase initialization to occur
 
-      proUserService.getUserProductsCollectionFromFirebase()
-          .then((value) {
-            cartService.getProductCartFromFirebase(_auth.getCurrentUser());
-        Navigator.restorablePushNamed(context, ProfileScreen.routeName);
+      proUserService.getUserProductsCollectionFromFirebase().then((value) {
+        cartService
+            .getProductCartFromFirebase(_auth.getCurrentUser())
+            .then((value) {
+          favoriteService
+              .getProductFavoriteFromFirebase(_auth.getCurrentUser())
+              .then((value) {
+            Navigator.restorablePushNamed(context, ProfileScreen.routeName);
+          });
+        });
       });
     });
 
@@ -43,13 +51,12 @@ class LoadingScreenProfile extends StatelessWidget {
                     height: 200,
                     child: CircularProgressIndicator(
                       strokeWidth: 10,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black.withOpacity(0.5)),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.black.withOpacity(0.5)),
                     ),
                   ),
                 )
               ],
-            )
-        )
-    );
+            )));
   }
 }

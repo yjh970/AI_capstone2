@@ -51,8 +51,10 @@ class MyApp extends StatelessWidget {
         Provider(
           create: (context) => CartService()
         ),
+        Provider(
+            create: (context) => FavoriteService()
+        ),
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => FavoriteService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
