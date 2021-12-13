@@ -7,10 +7,13 @@ import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 import '../../../size_config.dart';
 
 class PopularProducts extends StatelessWidget {
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
 
   @override
@@ -49,7 +52,11 @@ class PopularProducts extends StatelessWidget {
                           product: recommendedProducts[index],
                           onCardClick: (){
                             proSelection.selectedProduct = recommendedProducts[index];
+
+                            analytics.logEvent(name : 'meeting_click', parameters: {'title' : recommendedProducts[index].title});
+
                             Navigator.pushNamed(context, LoadingScreenDetails.routeName);
+
                           },
                         );
                       return SizedBox.shrink();
