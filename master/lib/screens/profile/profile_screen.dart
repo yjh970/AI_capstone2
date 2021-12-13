@@ -16,7 +16,6 @@ class ProfileScreen extends StatelessWidget {
         child: CustomAppBarProfile(),
       ),
       body: Body(),
-      bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

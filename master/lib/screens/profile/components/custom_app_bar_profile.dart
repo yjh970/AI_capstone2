@@ -20,10 +20,7 @@ class CustomAppBarProfile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            RoundedIconBtn(
-              iconData: Icons.arrow_back,
-              press: () => Navigator.pushNamed(context, HomeScreen.routeName),
-            ),
+            Text('',style:TextStyle(fontSize: 20)),
           ],
         ),
       ),

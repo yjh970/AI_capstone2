@@ -88,6 +88,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/muli/Muli-Light.ttf
           weight: 300
+    - family: BottomNavigationIcons
+      fonts:
+        - asset: assets/fonts/bottom_navigation_icons.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

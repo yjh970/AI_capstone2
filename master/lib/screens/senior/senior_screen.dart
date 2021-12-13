@@ -13,7 +13,6 @@ class SeniorScreen extends StatelessWidget {
         title: Text("미팅 관리"),
       ),
       body: Body(),
-      bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

@@ -35,7 +35,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         _messageList.add(doc["contents"]);
         _titleList.add(doc["title"]);
         _senderNameList.add(doc["senderName"]);
-        _dateList.add(doc["date"]);
+        _dateList.add(doc["date"].toString());
 
       });
     });
@@ -59,6 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            automaticallyImplyLeading: false,
           title: Text('Alarm'),
         ),
         body:FutureBuilder(
@@ -82,7 +83,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
               }
             }
         ),
-    bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.notification),
 
 
         );

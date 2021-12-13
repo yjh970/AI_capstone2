@@ -23,7 +23,7 @@ class LoadingScreenNotifications extends StatelessWidget {
       proUserService.getUserProductsCollectionFromFirebase()
           .then((value) {
         cartService.getProductCartFromFirebase(_auth.getCurrentUser()).then((value) {
-          Navigator.restorablePushNamed(context, NotificationScreen.routeName);
+          Navigator.pushReplacementNamed(context, NotificationScreen.routeName);
         });
 
       });

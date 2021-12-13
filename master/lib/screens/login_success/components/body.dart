@@ -67,7 +67,7 @@ class _BodyState extends State<Body> {
           width: SizeConfig.screenWidth * 0.6,
           child: DefaultButton(
             text: "Back to home",
-            press: () => Navigator.pushNamed(context, LoadingScreenHome.routeName),
+            press: () => Navigator.pushReplacementNamed(context, LoadingScreenHome.routeName),
           ),
         ),
         Spacer(),

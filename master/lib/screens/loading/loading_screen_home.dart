@@ -1,4 +1,5 @@
 import 'package:final_project/constants.dart';
+import 'package:final_project/new_nav.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:final_project/services/product_service.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ class LoadingScreenHome extends StatelessWidget {
 
       proService.getProductsCollectionFromFirebase()
           .then((value) {
-        Navigator.restorablePushNamed(context, HomeScreen.routeName);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NewNav()));
       });
     });
 

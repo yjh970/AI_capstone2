@@ -12,9 +12,9 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Category"),
+          automaticallyImplyLeading: false
       ),
       body: Body(),
-      bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.category),
     );
   }
 }

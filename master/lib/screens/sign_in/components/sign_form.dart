@@ -86,7 +86,7 @@ class _SignFormState extends State<SignForm> {
                   setState(
                       () => error = 'could not sign in with those credentials');
                 } else {
-                  Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                  Navigator.pushReplacementNamed(context, LoginSuccessScreen.routeName);
                 }
               }
             },

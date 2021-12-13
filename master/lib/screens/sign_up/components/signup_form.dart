@@ -334,7 +334,7 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Text("확인"),
       onPressed: () {
         Navigator.of(context).pop();
-        Navigator.pushNamed(context, SignInScreen.routeName);
+        Navigator.pushReplacementNamed(context, SignInScreen.routeName);
       },
     );
 

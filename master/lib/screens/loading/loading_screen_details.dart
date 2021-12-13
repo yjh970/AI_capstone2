@@ -50,7 +50,7 @@ class _LoadingScreenDetailsState extends State<LoadingScreenDetails> {
             favoriteService
                 .getProductFavoriteFromFirebase(_auth.getCurrentUser())
                 .then((value) {
-              Navigator.restorablePushNamed(context, DetailsScreen.routeName);
+              Navigator.pushReplacementNamed(context, DetailsScreen.routeName);
             });
           });
         });

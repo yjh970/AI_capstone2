@@ -28,7 +28,7 @@ class LoadingScreenProfile extends StatelessWidget {
           favoriteService
               .getProductFavoriteFromFirebase(_auth.getCurrentUser())
               .then((value) {
-            Navigator.restorablePushNamed(context, ProfileScreen.routeName);
+            Navigator.pushReplacementNamed(context, ProfileScreen.routeName);
           });
         });
       });

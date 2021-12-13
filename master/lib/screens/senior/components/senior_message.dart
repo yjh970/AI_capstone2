@@ -151,13 +151,10 @@ class _SeniorMessageState extends State<SeniorMessage> {
                     DefaultButton(
                       text: '전송하기',
                       press:(){
-                        print(userId);
-                        print(userName);
-                        print(meetingTitle);
-                        print(_IdList);
                         addMessage();
-                        // addMessage();
-                        // Navigator.pop(context);
+
+                        Navigator.pop(context);
+                        _showDialog();
                       },
                     ),
 
@@ -172,6 +169,30 @@ class _SeniorMessageState extends State<SeniorMessage> {
     ));
   }
 
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("${userName}님",style: TextStyle(fontSize: 20),),
+          content: new Text("${meetingTitle}의 수강생들에게\n정상적으로 메시지가 전송되었습니다.",style: TextStyle(fontSize: 15)),
+          actions: <Widget>[
+            new Container(
+              height: 20,
+              child:
+              GestureDetector(
+                child:Text("Close",style: TextStyle(fontSize: 15)),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
 
 
   Column buildMeetingDescriptionField() {
