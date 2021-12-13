@@ -6,13 +6,15 @@ class ProductService {
   FirebaseFirestore? _instance;
 
   List<Product> _products = [];
+  List<Product> _products2 = [];
+
 
   List<Product> getProducts() {
     return _products;
   }
 
   List<Product> getProducts2(){
-    return _products;
+    return _products2;
   }
 
 
@@ -25,6 +27,7 @@ class ProductService {
     var productsData = data['Products'] as List<dynamic>;
     productsData.forEach((proData) {
       _products.add(Product.fromJson(proData));
+      _products2.add(Product.fromJson(proData));
       print(_products);
     });
   }
