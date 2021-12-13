@@ -65,7 +65,9 @@ class BottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, LoadingScreenNotifications.routeName),
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NotificationScreen())),
               ),
               IconButton(
                 icon: SvgPicture.asset(

@@ -1,4 +1,5 @@
 import 'package:final_project/screens/senior/components/senior_introduction.dart';
+import 'package:final_project/screens/senior/components/senior_message.dart';
 import 'package:final_project/screens/senior/components/senior_user.dart';
 import 'package:final_project/screens/senior/components/senior_qna.dart';
 import 'package:final_project/screens/senior/components/senior_rating.dart';
@@ -87,6 +88,19 @@ class Body extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (BuildContext context) {
                     return SeniorQna();
+                  },
+                ),
+              );
+            },
+          ),
+          SeniorMenu(
+            icon: 'assets/icons/Mail.svg',
+            text: '메시지 보내기',
+            press: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return SeniorMessage();
                   },
                 ),
               );
