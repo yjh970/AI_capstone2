@@ -9,13 +9,13 @@ ThemeData theme() {
     fontFamily: "Muli",
     appBarTheme: appBarTheme(),
     textTheme: textTheme(),
-    inputDecorationTheme: inputDecorationTheme(),
+    inputDecorationTheme: inputDeccorationTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
 }
 
-InputDecorationTheme inputDecorationTheme() {
+InputDecorationTheme inputDeccorationTheme() {
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(28),
       borderSide: BorderSide(color: kTextColor),

@@ -1,83 +1,46 @@
-import 'dart:async';
-import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/models/Product.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:final_project/models/cart_item.dart';
 import 'package:final_project/models/favorite_item.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'auth.dart';
-
-class FavoriteService extends ChangeNotifier {
-  List<FavoriteItem> _items = [];
+class FavoriteService {
   FirebaseFirestore? _instance;
 
-  UnmodifiableListView<FavoriteItem> get items => UnmodifiableListView(_items);
+  List<FavoriteItem> _favItems = [];
 
-  void add(BuildContext context, FavoriteItem item) {
-    _items.add(item);
+  bool? _exists;
 
-    AuthService authService = Provider.of<AuthService>(context, listen: false);
-    Map<String, dynamic> favMap = Map();
-    _items.forEach((FavoriteItem item) {
-      favMap['title'] = (item.product as Product).title;
-      favMap['name'] = (item.product as Product).name;
-    });
+  List<FavoriteItem> getProductFavorite() {
+    return _favItems;
+  }
 
+  Future<void> getProductFavoriteFromFirebase(id) async {
+    _favItems = [];
     _instance = FirebaseFirestore.instance;
-    _instance!
-        .collection('favorites')
-        .doc(authService.getCurrentUser()) //need to get logged in account's id
-        .update({
-      'favoriteProduct': FieldValue.arrayUnion([favMap])
-    }).then((value) {
-      print(_items.length);
-      notifyListeners();
-    });
+    CollectionReference carts = _instance!.collection('favorites');
+    DocumentSnapshot snapshot = await carts.doc(id).get();
+    if(snapshot.exists == true){
+      var data = snapshot.data() as Map;
+      var favData = data['favoriteProduct'] as List<dynamic>;
+      favData.forEach((fData) {
+        //아직 로그인안되어 있어서 getCurrentUser()가 안됨
+        print('id matches User');
+        _favItems.add(FavoriteItem.fromJson(fData));
+      });
+    }
+    else{
+      _favItems = [];
+    }
   }
 
-  void remove(BuildContext context,  FavoriteItem item) {
-    _items.removeWhere((_item) => _item.product == item.product);
-
-    AuthService authService = Provider.of<AuthService>(context, listen: false);
-    Map<String, dynamic> cartMap = Map();
-    cartMap['title'] = (item.product as Product).title;
-    cartMap['name'] = (item.product as Product).name;
-    _instance = FirebaseFirestore.instance;
-    _instance!.collection('favorites').doc(authService.getCurrentUser()).update({
-      'favoriteProduct': FieldValue.arrayRemove([cartMap]),
-    }).then((value) {
-
-      print(_items.length);
-      notifyListeners();
-    });
+  Future<bool> checkIfDocExists(String docId) async {
+    try {
+      // Get reference to Firestore collection
+      var collectionRef = _instance!.collection('reviews');
+      var doc = await collectionRef.doc(docId).get();
+      return doc.exists;
+    } catch (e) {
+      throw e;
+    }
   }
-
-
-  bool isProductAddedToFavorite(Product? pro) {
-
-    return _items.length >= 0 ? _items.any(
-            (FavoriteItem item) => item.product!.title == pro!.title) : false;
-  }
-
-
-  // void loadFavoriteItemsFromFirebase(BuildContext context) {
-  //   if (_items.length > 0) {
-  //     _items.clear();
-  //   }
-  //   AuthService authService = Provider.of<AuthService>(context, listen: false);
-  //   ProductService proService =
-  //   Provider.of<ProductService>(context, listen: false);
-  //   ProductSelectionService proSelectionService =
-  //   Provider.of<ProductSelectionService>(context, listen: false);
-  //
-  //   FirebaseFirestore.instance
-  //       .collection('favorites')
-  //       .doc(authService.getCurrentUser())
-  //       .get()
-  //       .then((DocumentSnapshot snapshot) {
-  //     Map<String, String> cartItems = snapshot.get(FieldPath(['favoriteProduct']));
-  //     notifyListeners();
-  //   });
-  // }
 }

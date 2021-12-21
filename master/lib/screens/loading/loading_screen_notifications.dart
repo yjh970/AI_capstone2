@@ -1,28 +1,31 @@
 import 'package:final_project/constants.dart';
-import 'package:final_project/new_nav.dart';
-import 'package:final_project/screens/home/home_screen.dart';
-import 'package:final_project/services/product_service.dart';
+import 'package:final_project/screens/notification/notification_screen.dart';
+import 'package:final_project/screens/profile/profile_screen.dart';
+import 'package:final_project/services/auth.dart';
+import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/user_product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoadingScreenHome extends StatelessWidget {
-  static String routeName = '/loadingHome';
-
+class LoadingScreenNotifications extends StatelessWidget {
+  static String routeName = '/loadingNotifications';
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
 
-    ProductService proService = Provider.of<ProductService>(context, listen: false);
-
+    UserProductService proUserService = Provider.of<UserProductService>(context, listen: false);
+    CartService cartService = Provider.of<CartService>(context, listen: false);
     Future.delayed(Duration(seconds: 2), () async {
 
       // await for the Firebase initialization to occur
 
-      proService.getProductsCollectionFromFirebase()
+      proUserService.getUserProductsCollectionFromFirebase()
           .then((value) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => NewNav()));
+        cartService.getProductCartFromFirebase(_auth.getCurrentUser()).then((value) {
+          Navigator.pushReplacementNamed(context, NotificationScreen.routeName);
+        });
+
       });
     });
 

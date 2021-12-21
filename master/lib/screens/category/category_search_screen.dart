@@ -137,7 +137,6 @@ class CategorySearchScreen extends StatelessWidget {
 
 
 
-      bottomNavigationBar: BottomNavBar(selectedMenu: MenuState.category),
     );
   }
 }

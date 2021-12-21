@@ -1,4 +1,5 @@
 import 'package:final_project/components/rounded_icon_button.dart';
+import 'package:final_project/new_nav.dart';
 import 'package:final_project/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,8 @@ class CustomAppBarDetails extends StatelessWidget {
           children: [
             RoundedIconBtn(
               iconData: Icons.arrow_back,
-              press: () => Navigator.pushNamed(context, HomeScreen.routeName),
-            ),
+              press: () => Navigator.pop(context)),
+
           ],
         ),
       ),

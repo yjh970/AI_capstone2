@@ -1,7 +1,13 @@
 import 'package:final_project/models/Product.dart';
+import 'package:flutter/material.dart';
 
 class FavoriteItem {
-  Product? product;
+  final String title;
+  final String name;
 
-  FavoriteItem({this.product});
+  FavoriteItem( {required this.title, required this.name});
+
+  factory FavoriteItem.fromJson(Map<String, dynamic> json){
+    return FavoriteItem(title: json['title'], name: json['name']);
+  }
 }

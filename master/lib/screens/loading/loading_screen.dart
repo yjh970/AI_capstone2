@@ -21,7 +21,7 @@ class LoadingScreen extends StatelessWidget {
 
       proService.getProductsCollectionFromFirebase()
           .then((value) {
-        Navigator.restorablePushNamed(context, SplashScreen.routeName);
+        Navigator.pushReplacementNamed(context, SplashScreen.routeName);
       });
     });
 

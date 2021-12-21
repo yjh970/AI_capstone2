@@ -19,10 +19,6 @@ class Body extends StatelessWidget {
         crossAxisCount: 1,
         childAspectRatio: 6/1,
         children: <Widget>[
-          for(var item in categoryList)
-            NotificationMenu(
-              text:item,
-            ),
       ],
 
     );

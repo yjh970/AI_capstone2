@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/default_button.dart';
 import 'package:final_project/models/Product.dart';
 import 'package:final_project/models/cart_item.dart';
@@ -9,7 +12,11 @@ import 'package:final_project/screens/details/components/product_description_qna
 import 'package:final_project/screens/details/components/product_description_rating.dart';
 import 'package:final_project/screens/details/components/product_images.dart';
 import 'package:final_project/screens/details/components/top_rounded_container.dart';
+import 'package:final_project/screens/loading/loading_screen_details.dart';
+import 'package:final_project/services/auth.dart';
+import 'package:final_project/services/cartDatbase.dart';
 import 'package:final_project/services/cartService.dart';
+import 'package:final_project/services/favoriteDatabase.dart';
 import 'package:final_project/services/favoriteService.dart';
 import 'package:final_project/services/product_selection_service.dart';
 import 'package:final_project/size_config.dart';
@@ -27,6 +34,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> with TickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollController;
+  final AuthService _auth = AuthService();
 
   final meetingKey = new GlobalKey();
   final mentorKey = new GlobalKey();
@@ -38,6 +46,11 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
   double ratingHeight = 0;
   double questionHeight = 0;
   bool isTapToScroll = false;
+  bool isAddedCart = false;
+  bool isAddedFavorite = false;
+  String buttonText = "Participate";
+  Color boxDecorationColor = Color(0xFFF5F6F9);
+  Color pictureColor = Color(0xFFDBDEE4);
 
   @override
   void initState() {
@@ -55,7 +68,39 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
         Provider.of<ProductSelectionService>(context, listen: false);
     widget.product = proSelection.selectedProduct;
     CartService cartService = Provider.of<CartService>(context, listen: false);
-    FavoriteService favoriteService = Provider.of<FavoriteService>(context, listen: false);
+    FavoriteService favoriteService =
+    Provider.of<FavoriteService>(context, listen: false);
+    List<CartItem> cart = cartService.getProductCart();
+    List<FavoriteItem> favorite = favoriteService.getProductFavorite();
+    var containCart =
+        cart.where((element) => element.title == this.widget.product!.title);
+    var containFavorite = favorite.where((element) => element.title == this.widget.product!.title);
+    if (containCart.isEmpty) {
+      isAddedCart = false;
+      buttonText = "Participate";
+    }
+    if(containFavorite.isEmpty){
+      isAddedFavorite = false;
+      boxDecorationColor = Color(0xFFF5F6F9);
+      pictureColor = Color(0xFFDBDEE4);
+    }
+    print("isAddedCart: ");
+    print(isAddedCart);
+    print("isAddedFavorite: ");
+    print(isAddedFavorite);
+    if (containCart.isEmpty == false) {
+      isAddedCart = true;
+      buttonText = "Delete";
+    }
+    if(containFavorite.isEmpty == false) {
+      isAddedFavorite = true;
+      boxDecorationColor = Color(0xFFFFE6E6);
+      pictureColor = Color(0xFFFF4848);
+    }
+    print("isAddedCart: ");
+    print(isAddedCart);
+    print("isAddedFavorite: ");
+    print(isAddedFavorite);
 
     void _addParticipateDialog(BuildContext context) {
       // set up the buttons
@@ -194,62 +239,86 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
         children: [
           ProductImages(product: widget.product!),
           Align(
-            alignment: Alignment.centerRight,
-            child: Consumer<FavoriteService>(
-                builder: (context, favorite, child) {
+              alignment: Alignment.centerRight,
+              child: StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('favorites')
+                    .doc(_auth.getCurrentUser())
+                    .snapshots(),
+                builder: (context, snapshot) {
                   Widget renderedButton;
-                  if (favorite.isProductAddedToFavorite(this.widget.product) == false){
+                  if (isAddedFavorite == false) {
                     renderedButton = GestureDetector(
-                      onTap: (){
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                        favoriteService.add(context, FavoriteItem(product: this.widget.product));
+                      onTap: () async{
+                        String title = widget.product!.title;
+                        String name = widget.product!.name;
+
+
+                        setState(() {
+                          isAddedFavorite = !isAddedFavorite;
+                          boxDecorationColor = Color(0xFFFFE6E6);
+                          pictureColor = Color(0xFFFF4848);
+                        });
+
+                        await FavoriteDatabaseService().updateFavoriteData(title, name);
+                        Navigator.pushNamed(context, LoadingScreenDetails.routeName);
+
+
+
                         _addFavoriteDialog(context);
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                      }
-                      ,
+                      },
                       child: Container(
                         padding: EdgeInsets.all(getProportionateScreenWidth(15)),
                         width: getProportionateScreenWidth(64),
                         decoration: BoxDecoration(
-                            color: Color(0xFFF5F6F9),
+                            color: boxDecorationColor,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 bottomLeft: Radius.circular(20))),
                         child: SvgPicture.asset(
                           'assets/icons/Heart Icon_2.svg',
-                          color: Color(0xFFDBDEE4),
+                          color: pictureColor,
                         ),
                       ),
                     );
-                  }
-                  else{
+                  } else {
                     renderedButton = GestureDetector(
-                      onTap: (){
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                        favoriteService.remove(context, FavoriteItem(product: this.widget.product));
-                        _deleteFavoriteDialog(context);
-                        print(favorite.isProductAddedToFavorite(this.widget.product));
-                      },
+                      onTap: () async{
+                        String title = widget.product!.title;
+                        String name = widget.product!.name;
 
+                        setState(() {
+                          isAddedFavorite = !isAddedFavorite;
+                          boxDecorationColor = Color(0xFFF5F6F9);
+                          pictureColor = Color(0xFFDBDEE4);
+                        });
+
+
+                        await FavoriteDatabaseService().deleteFavoriteData(title, name);
+                        Navigator.pushNamed(context, LoadingScreenDetails.routeName);
+                        _deleteFavoriteDialog(context);
+
+
+                      },
                       child: Container(
                         padding: EdgeInsets.all(getProportionateScreenWidth(15)),
                         width: getProportionateScreenWidth(64),
                         decoration: BoxDecoration(
-                            color: Color(0xFFFFE6E6),
+                            color: boxDecorationColor,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 bottomLeft: Radius.circular(20))),
                         child: SvgPicture.asset(
                           'assets/icons/Heart Icon_2.svg',
-                          color: Color(0xFFFF4848),
+                          color: pictureColor,
                         ),
                       ),
                     );
                   }
                   return renderedButton;
-                }
-            ),
-          ),
+                },
+              ),
+              ),
           TopRoundedContainer(
             height: 580,
             color: Colors.white,
@@ -276,8 +345,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         product: widget.product!, key: meetingKey),
                     ProductDescriptionMentor(
                         product: widget.product!, key: mentorKey),
-                    ProductDescriptionRating(key: ratingKey,
-                        ),
+                    ProductDescriptionRating(
+                      key: ratingKey,
+                    ),
                     ProductDescriptionQnA(
                       key: questionsKey,
                     )
@@ -286,35 +356,67 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Consumer<CartService>(
-            builder: (context, cart, child) {
+          StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('cart')
+                .doc(_auth.getCurrentUser())
+                .snapshots(),
+            builder: (context, snapshot) {
               Widget renderedButton;
-              if (cart.isProductAddedToCart(widget.product) == false) {
+              if (isAddedCart == false) {
                 renderedButton = DefaultButton(
-                  text: "Participate",
-                  press: () {
-                    print(cart.isProductAddedToCart(widget.product));
+                  text: buttonText,
+                  press: () async {
+                    String title = widget.product!.title;
+                    String name = widget.product!.name;
+                    String link =
+                        "https://zoom.us/j/96519344560?pwd=c2hteHFRRXBjUGVIWVNnTzhzR2pkUT09";
+
+                    print(title);
+                    print(name);
+
+
+                    setState(() {
+                      isAddedCart = !isAddedCart;
+                      buttonText = "Delete";
+                    });
+
+
+                    await CartDatabaseService()
+                        .updateCartData(title, name, link);
+                    Navigator.pushNamed(context, LoadingScreenDetails.routeName);
+
                     _addParticipateDialog(context);
-                    cartService.add(context, CartItem(product: widget.product));
-                    print(cart.isProductAddedToCart(widget.product));
+
+
                   },
                 );
               } else {
                 renderedButton = DefaultButton(
-                  text: "Delete",
-                  press: () {
-                    print(cart.isProductAddedToCart(widget.product));
+                  text: buttonText,
+                  press: () async {
+                    String title = widget.product!.title;
+                    String name = widget.product!.name;
+                    String link =
+                        "https://zoom.us/j/96519344560?pwd=c2hteHFRRXBjUGVIWVNnTzhzR2pkUT09";
+                    await CartDatabaseService()
+                        .deleteCartData(title, name, link);
+
+                    setState(() {
+                      isAddedCart = !isAddedCart;
+                      buttonText = "Participate";
+                    });
+
+                    Navigator.pushNamed(context, LoadingScreenDetails.routeName);
                     _deleteParticipateDialog(context);
-                    cartService.remove(
-                        context, CartItem(product: widget.product));
-                    print(cart.isProductAddedToCart(widget.product));
+
+
                   },
                 );
               }
               return renderedButton;
-              //
             },
-          ),
+          )
         ],
       ),
     );
